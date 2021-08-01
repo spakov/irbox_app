@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Transmit {% if success %}Succeeded{% else %}Failed{% endif %}{% endblock %}
+{% block content %}
+    <h1>{{ self.title() }}</h1>
+    <div class="indent">
+    {% if message %}
+    <p>{{ message }}.</p>
+    {% endif %}
+      <dl>
+        <dt>Protocol</dt>
+        <dd>{{ protocol }}</dd>
+        <dt>Address</dt>
+        <dd>{{ address }}</dd>
+        <dt>Command</dt>
+        <dd>{{ command }}</dd>
+        <dt>Repeats</dt>
+        <dd>{{ repeats }}</dd>
+        <dt>Bits</dt>
+        <dd>{{ bits }}</dd>
+      </dl>
+    </div>
+{% endblock %}

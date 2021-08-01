@@ -1,0 +1,113 @@
+body {
+  background-color: #333;
+  color: white;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+
+.indent {
+  margin-left: 2em;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: max-content auto;
+  grid-column-gap: 0.5em;
+}
+
+dl dt {
+  grid-column-start: 1;
+  margin: 0;
+  font-weight: bold;
+}
+
+dl dt:after {
+  content: ':';
+}
+
+dl dd {
+  grid-column-start: 2;
+  margin: 0;
+}
+
+button {
+  font-weight: inherit;
+  background-color: var(--bg, #333);
+  color: white;
+  font-size: 16pt;
+  border-radius: 1em;
+  border-left: 0.2ex solid #282828;
+  border-top: 0.2ex solid #282828;
+  border-right: 0.4ex solid #222;
+  border-bottom: 0.4ex solid #222;
+  padding: 0 0.5em;
+  min-height: 2em;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--bg, #333) !important;
+  filter: brightness(1.2);
+}
+
+button:active {
+  background-color: var(--bg, #333) !important;
+  filter: brightness(0.8);
+}
+
+.button-grid {
+  display: grid;
+  justify-items: center;
+  margin: auto;
+}
+
+@media only screen and (min-width: 640px) {
+  .button-grid {
+    max-width: var(--width);
+  }
+}
+
+.button-grid #status {
+  border: 1px solid #222;
+  background-color: #222;
+  width: 1em;
+  margin-left: calc(var(--width) - 1em);
+  height: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.button-grid #response {
+  position: absolute;
+  display: none;
+  border: 1px solid #222;
+  background-color: #333;
+  width: min(50vw, var(--width));
+  height: min(50vh, var(--width));
+  filter: drop-shadow(0.5em 0.5em 0.5em #111);
+  z-index: 65534;
+}
+
+.button-grid button#response-close {
+  position: absolute;
+  display: none;
+  font-size: 12pt;
+  width: 1em;
+  min-height: 1em;
+  padding-left: 0.25em;
+  padding-right: 1em;
+  margin-left: calc(min(50vw, var(--width)) - 1em);
+  z-index: 65535;
+}
+
+.button-grid .row {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-column-gap: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.button-grid .row .fit {
+  display: table-cell;
+  width: calc(var(--width) / var(--cols) - 0.5em * (var(--cols) - 1));
+}
