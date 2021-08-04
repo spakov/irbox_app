@@ -1,54 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Remote{% endblock %}
+{% block title %}IR Box{% endblock %}
 {% block content %}
-    <script src="{{ url_for('static', filename='irbox.js') }}"></script>
-    <div class="button-grid" style="--width: 200px;">
-      <div id="status" onclick="toggleResponse();"></div>
-      <iframe id="response"></iframe>
-      <button id="response-close" onclick="toggleResponse();">✕</button>
-      <div class="row" style="--cols: 1;">
-        <button type="button" onclick="tx({'p': '0x13', 'a': '0x1', 'c': '0x12', 'r': '0x3', 'b': '0xc'});">⌽</button>
-      </div>
-      <div class="row" style="--cols: 2;">
-        <button type="button" class="fit" onclick="invalid();">⏍</button>
-        <button type="button" class="fit" onclick="nop();">≡</button>
-      </div>
-      <div class="row" style="--cols: 1; margin-top: 0.5em;">
-        <button type="button" style="--bg: #008;">⬆︎</button>
-      </div>
-      <div class="row" style="--cols: 3;">
-        <button type="button" style="--bg: #008;">⬅︎</button>
-        <button type="button" style="--bg: #008;">✓</button>
-        <button type="button" style="--bg: #008;"><span style="display: inline-block; transform: scale(-1, 1);">⬅︎</span></button>
-      </div>
-      <div class="row" style="--cols: 1; margin-bottom: 0.5em;">
-        <button type="button" style="--bg: #008;">⬇︎</button>
-      </div>
-      <div class="row" style="--cols: 3;">
-        <button type="button" class="fit"><span style="display: inline-block; letter-spacing: -0.2ex; transform: scale(-1, 1);">▸▸</span></button>
-        <button type="button" class="fit">▸</button>
-        <button type="button" class="fit"><span style="letter-spacing: -0.2ex;">▸▸</span></button>
-      </div>
-      <div class="row" style="--cols: 3; margin-bottom: 1em;">
-        <button type="button" class="fit"><span style="display: inline-block; letter-spacing: -0.2ex; transform: scale(-1, 1);">▸<span style="font-size: 0.5em; vertical-align: 0.4ex;">❘</span></span></button>
-        <button type="button" class="fit">◾︎</button>
-        <button type="button" class="fit">▸<span style="font-size: 0.5em; vertical-align: 0.4ex;">❘</span></button>
-      </div>
-      <div class="row" style="--cols: 2;">
-        <button type="button" class="fit" style="--bg: #08f;">X</button>
-        <button type="button" class="fit" style="--bg: #880;">Y</button>
-      </div>
-      <div class="row" style="--cols: 2;">
-        <button type="button" class="fit" style="--bg: #080;">A</button>
-        <button type="button" class="fit" style="--bg: #800;">B</button>
-      </div>
-      <div class="row" style="--cols: 2;">
-        <button type="button" class="fit">DIY-1</button>
-        <button type="button" class="fit">DIY-2</button>
-      </div>
-      <div class="row" style="--cols: 2;">
-        <button type="button" class="fit">DIY-3</button>
-        <button type="button" class="fit">DIY-4</button>
-      </div>
-    </div>
+    <p>Select remote:</p>
+    <ul>
+      <li><a href="{{ url_for('remote_blueprint.remote', remote_id='bedycoon') }}">Bedycoon</a></li>
+      <li><a href="{{ url_for('remote_blueprint.remote', remote_id='living-room') }}">Living Room</a></li>
+    </ul>
 {% endblock %}

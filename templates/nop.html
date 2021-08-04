@@ -1,8 +1,4 @@
-{% extends 'base.html' %}
-{% block title %}nop {% if success %}Succeeded{% else %}Failed{% endif %}{% endblock %}
-{% block content %}
-    <h1>{{ self.title() }}</h1>
-    {% if message %}
-    <p>{{ message }}.</p>
-    {% endif %}
+{% extends 'command-base.html' %}
+{% block command %}No-op{% endblock %}
+{% block subpage_content %}
 {% endblock %}

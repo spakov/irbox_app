@@ -1,7 +1,12 @@
+from app import irbox
+
+from flask import Blueprint
 from flask import render_template
 from flask import request
 
-@app.route('/error')
+error_blueprint = Blueprint('error_blueprint', __name__)
+
+@error_blueprint.route('/error')
 def error():
     """
     Generic error page.

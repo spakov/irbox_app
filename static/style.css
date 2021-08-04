@@ -9,6 +9,33 @@ body {
   margin-left: 2em;
 }
 
+.message {
+  font-family: Menlo, "Lucida Console", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  border: 1px #222 dashed;
+  background-color: #444;
+  padding: 0 0.5ex;
+}
+
+h1 {
+  font-size: 16pt;
+  font-weight: 400;
+  margin: 0;
+  border-bottom: 1px #ccc dotted;
+}
+
+a {
+  color: #88f;
+  text-decoration: none;
+}
+
+a.back {
+  font-size: 16pt;
+  font-weight: 600;
+  float: left;
+}
+
 dl {
   display: grid;
   grid-template-columns: max-content auto;
@@ -18,7 +45,7 @@ dl {
 dl dt {
   grid-column-start: 1;
   margin: 0;
-  font-weight: bold;
+  font-weight: 400;
 }
 
 dl dt:after {
@@ -43,6 +70,7 @@ button {
   padding: 0 0.5em;
   min-height: 2em;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 button:hover {
@@ -107,7 +135,7 @@ button:active {
   padding-bottom: 0.5em;
 }
 
-.button-grid .row .fit {
+.button-grid .row .fill {
   display: table-cell;
   width: calc(var(--width) / var(--cols) - 0.5em * (var(--cols) - 1));
 }

@@ -1,28 +1,33 @@
+from app import irbox
+
+from flask import Blueprint
 from flask import make_response
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
 
-@app.route('/invalid')
+invalid_blueprint = Blueprint('invalid_blueprint', __name__)
+
+@invalid_blueprint.route('/invalid')
 def invalid():
     """
-    invalid command. For debugging.
+    Invalid command (for debugging purposes).
     """
 
     if irbox.invalid():
-        endpoint = 'invalid_success'
+        endpoint = 'invalid_blueprint.invalid_success'
         message = None
     else:
-        endpoint = 'invalid_failure'
-        message = irbox.error
+        endpoint = 'invalid_blueprint.invalid_failure'
+        message = irbox.response
 
     return redirect(url_for(
             endpoint,
             m=message
     ))
 
-@app.route('/invalid/success')
+@invalid_blueprint.route('/invalid/success')
 def invalid_success():
     """
     Successful invalid command. (This should be unreachable.)
@@ -37,10 +42,10 @@ def invalid_success():
                     success=True
             )
     );
-    response.headers.set('Transmit-Succeeded', 'true');
+    response.headers.set('Irbox-Success', 'true');
     return response;
 
-@app.route('/invalid/failure')
+@invalid_blueprint.route('/invalid/failure')
 def invalid_failure():
     """
     Failed invalid command.
@@ -55,5 +60,5 @@ def invalid_failure():
                     success=False
             )
     );
-    response.headers.set('Transmit-Succeeded', 'false');
+    response.headers.set('Irbox-Success', 'false');
     return response;

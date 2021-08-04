@@ -1,12 +1,18 @@
+from app import irbox
+
+from irbox.errors import MalformedArgumentsError
+from irbox.protocol import Protocol
+
+from flask import Blueprint
 from flask import make_response
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
 
-from protocol import Protocol
+tx_blueprint = Blueprint('tx_blueprint', __name__)
 
-@app.route('/tx')
+@tx_blueprint.route('/tx')
 def tx():
     """
     Transmit command.
@@ -25,7 +31,7 @@ def tx():
     try:
         protocol_decimal = int(protocol[2:], 16)
     except ValueError:
-        protocol_decimal = 0
+        protocol_decimal = Protocol.UNKNOWN.value
 
     # Build subsequent arguments
     if (
@@ -45,7 +51,7 @@ def tx():
     else:
         # Protocol is not implemented
         return redirect(url_for(
-                'tx_failure',
+                'tx_blueprint.tx_failure',
                 m='Unsupported protocol',
                 p=protocol,
                 a=address,
@@ -54,12 +60,27 @@ def tx():
                 b=bits
         ))
 
-    if irbox.tx(args):
-        endpoint = 'tx_success'
-        message = None
+    # Send the tx() command
+    try:
+        success = irbox.tx(args)
+    except MalformedArgumentsError:
+        # Arguments are malformed
+        return redirect(url_for(
+                'tx_blueprint.tx_failure',
+                m='Malformed arguments',
+                p=protocol,
+                a=address,
+                c=command,
+                r=repeats,
+                b=bits
+        ))
+
+    if success:
+        endpoint = 'tx_blueprint.tx_success'
     else:
-        endpoint = 'tx_failure'
-        message = irbox.error
+        endpoint = 'tx_blueprint.tx_failure'
+
+    message = irbox.response
 
     return redirect(url_for(
             endpoint,
@@ -71,7 +92,7 @@ def tx():
             b=bits
     ))
 
-@app.route('/tx/success')
+@tx_blueprint.route('/tx/success')
 def tx_success():
     """
     Successful command transmission.
@@ -96,10 +117,10 @@ def tx_success():
                     bits=bits
             )
     );
-    response.headers.set('Transmit-Succeeded', 'true');
+    response.headers.set('Irbox-Success', 'true');
     return response;
 
-@app.route('/tx/failure')
+@tx_blueprint.route('/tx/failure')
 def tx_failure():
     """
     Failed command transmission.
@@ -124,5 +145,5 @@ def tx_failure():
                     bits=bits
             )
     );
-    response.headers.set('Transmit-Succeeded', 'false');
+    response.headers.set('Irbox-Success', 'false');
     return response;

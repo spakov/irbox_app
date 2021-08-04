@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}{% block command %}{% endblock %} {% if success %}Succeeded{% else %}Failed{% endif %}{% endblock %}
+{% block content %}
+    <h1>{{ self.title() }}</h1>
+    {% if message %}
+    {# Format message like code if it appears to be an  IR box response,
+    breaking at commas #}
+    <p><span{% if message[:1] == '+' or message[:1] == '-' %} class="message"{% endif %}>{{ message|replace(',', ',<wbr>')|safe }}</span>.</p>
+    {% endif %}
+    {% block subpage_content %}{% endblock %}
+{% endblock %}
