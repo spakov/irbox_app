@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Koopman Switcher{% endblock %}
+{% block content %}
+    <script src="{{ url_for('static', filename='irbox.js') }}"></script>
+    <script>
+      const PWR   = { 'p': 0x08, 'a': 0x80, 'c': 0x1,  'r': 0x0 };
+      const IN1   = { 'p': 0x08, 'a': 0x80, 'c': 0x1,  'r': 0x0 };
+      const IN2   = { 'p': 0x08, 'a': 0x80, 'c': 0x3,  'r': 0x0 };
+      const IN3   = { 'p': 0x08, 'a': 0x80, 'c': 0x3,  'r': 0x0 };
+      const IN4   = { 'p': 0x08, 'a': 0x80, 'c': 0x3,  'r': 0x0 };
+      const IN5   = { 'p': 0x08, 'a': 0x80, 'c': 0x3,  'r': 0x0 };
+      const PREV  = { 'p': 0x08, 'a': 0x80, 'c': 0x1f, 'r': 0x0 };
+      const NEXT  = { 'p': 0x08, 'a': 0x80, 'c': 0x1f, 'r': 0x0 };
+    </script>
+    <a id="back" href="{{ url_for('index_blueprint.index') }}" class="alt-align" title="Back to remotes list">🔙</a>
+    <a id="alt-toggle" class="alt-align" onclick="toggleAlt();" title="Toggle alignment">↹</a>
+    <div style="--response-width: 10rem; --response-height: 16rem;">
+      <iframe id="response" class="alt-align"></iframe>
+      <button id="response-close" class="alt-align" onclick="showResponse(false);">✕</button>
+    </div>
+    <div id="remote" class="alt-align" style="--legend-font-size: 9pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-bg: #666; --button-fg: white; --button-width: 2em; --button-height: 2em; --button-gap: 0.4em; --button-radius: 0.5ex; --button-font-size: 11pt; max-width: calc(var(--button-width) * 5 + var(--button-gap) * 6); border-radius: 0.5em 0.5em 1em 1em;">
+      <div id="status" onclick="toggleResponse();"></div>
+      <div style="height: 1em;"></div>
+      <legend class="no-alt">Power</legend>
+      <div class="grid-cluster">
+        <button type="button" style="--button-radius: 1rem; --button-bg: #c00; --button-font-size: 10pt;" onclick="tx(PWR);">⌽</button>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="grid-cluster alt-align">
+        <button type="button" onclick="tx(IN1);">1</button>
+        <div></div>
+        <div></div>
+        <div></div>
+        <button type="button" onclick="tx(IN2);">2</button>
+      </div>
+      <div class="grid-cluster alt-align">
+        <div></div>
+        <div></div>
+        <button type="button" onclick="tx(IN3);">3</button>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="grid-cluster alt-align">
+        <button type="button" onclick="tx(IN4);">4</button>
+        <div></div>
+        <div></div>
+        <div></div>
+        <button type="button" onclick="tx(IN5);">5</button>
+      </div>
+      <div class="grid-cluster alt-align">
+        <button type="button" onclick="tx(PREV);">◀︎</button>
+        <div></div>
+        <div></div>
+        <div></div>
+        <button type="button" onclick="tx(NEXT);">▶︎</button>
+      </div>
+      <div style="height: 3em;"></div>
+      <div style="text-align: center; font-size: 9pt;">
+        <p>5 Port Amplifier Selector</p>
+        <p>Remote Control</p>
+        <p style="font-size: 11pt;">OZQ3-3</p>
+      </div>
+      <div style="height: 0.5em;"></div>
+    </div>
+{% endblock %}

@@ -82,6 +82,43 @@ function showResponse(visible = true) {
 }
 
 /*
+ * Toggles alternate alignment.
+ */
+function toggleAlt() {
+  _toggleAltElement(document.getElementById('back'));
+  _toggleAltElement(document.getElementById('alt-toggle'));
+  _toggleAltElement(document.getElementById('response'));
+  _toggleAltElement(document.getElementById('response-close'));
+  _toggleAltElement(document.getElementById('remote'), true);
+}
+
+/*
+ * Toggles alternate alignment of a single element.
+ *
+ * Args:
+ *     recurse (bool): Whether or not to toggle child elements as well.
+ */
+function _toggleAltElement(element, recurse = false) {
+  if (!element) return;
+
+  if (element.className.search(/alt-align/) != -1) {
+    element.className = element.className.replaceAll(/ ?alt-align ?/g, '')
+  } else if (element.className.search(/no-alt/) == -1) {
+    if (element.className.length == 0) {
+      element.className = 'alt-align'
+    } else {
+      element.className += ' alt-align'
+    }
+  }
+
+  if (recurse) {
+    for (var i = 0; i < element.children.length; i++) {
+      _toggleAltElement(element.children[i], true);
+    }
+  }
+}
+
+/*
  * Performs an asynchronous GET request. Updates the status "LED" to indicate
  * progress.
  *

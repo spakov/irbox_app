@@ -1,20 +1,17 @@
 body {
-  background-color: #333;
-  color: white;
+  background-color: white;
+  color: black;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
-}
-
-.indent {
-  margin-left: 2em;
+  font-size: 12pt;
 }
 
 .message {
   font-family: Menlo, "Lucida Console", monospace;
   white-space: pre-wrap;
   overflow-wrap: break-word;
-  border: 1px #222 dashed;
-  background-color: #444;
+  border: 1px #eee dashed;
+  background-color: #ddd;
   padding: 0 0.5ex;
 }
 
@@ -22,18 +19,41 @@ h1 {
   font-size: 16pt;
   font-weight: 400;
   margin: 0;
-  border-bottom: 1px #ccc dotted;
+  border-bottom: 1px #999 dotted;
+}
+
+h2 {
+  font-size: 12pt;
+  font-weight: 400;
+  margin: 0;
 }
 
 a {
   color: #88f;
   text-decoration: none;
+  cursor: pointer;
 }
 
-a.back {
-  font-size: 16pt;
-  font-weight: 600;
+a#back {
+  font-size: 150%;
+  float: right;
+}
+
+a#back.alt-align {
   float: left;
+}
+
+a#alt-toggle {
+  display: table;
+  position: fixed;
+  bottom: 0.5em;
+  right: 0.5em;
+  font-size: 150%;
+  color: inherit;
+}
+
+a#alt-toggle.alt-align {
+  left: 0.5em;
 }
 
 dl {
@@ -57,85 +77,222 @@ dl dd {
   margin: 0;
 }
 
+#remote {
+  border: 1px #222 solid;
+  background-color: var(--remote-bg, #333);
+  color: var(--remote-fg, white);
+}
+
+#remote.alt-align {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  display: table;
+  margin: var(--button-gap, 0.5em);
+  margin-top: calc(var(--buton-gap, 0.5em) * 2);
+  color: var(--legend-fg, inherit);
+  font-size: var(--legend-font-size, inherit);
+  font-weight: 400;
+}
+
+legend.alt-align {
+  margin-left: auto;
+  margin-right: var(--button-gap, 0.5em);
+}
+
 button {
+  background-color: var(--button-bg, #333);
+  color: var(--button-fg, white);
+  text-align: center;
   font-weight: inherit;
-  background-color: var(--bg, #333);
-  color: white;
-  font-size: 16pt;
-  border-radius: 1em;
+  font-size: var(--button-font-size, inherit);
+  border-radius: var(--button-radius, 1em);
   border-left: 0.2ex solid #282828;
   border-top: 0.2ex solid #282828;
   border-right: 0.4ex solid #222;
   border-bottom: 0.4ex solid #222;
+  margin: 0;
   padding: 0 0.5em;
-  min-height: 2em;
   cursor: pointer;
   touch-action: manipulation;
 }
 
 button:hover {
-  background-color: var(--bg, #333) !important;
+  background-color: var(--button-bg, #333) !important;
   filter: brightness(1.2);
 }
 
 button:active {
-  background-color: var(--bg, #333) !important;
+  background-color: var(--button-bg, #333) !important;
   filter: brightness(0.8);
 }
 
-.button-grid {
+.grid-cluster {
   display: grid;
-  justify-items: center;
-  margin: auto;
+  grid-gap: var(--button-gap, 0.5em);
+  grid-template-columns: repeat(auto-fit, var(--button-width, 3em));
+  grid-template-rows: repeat(auto-fit, var(--button-height, 2em));
+  margin: var(--button-gap, 0.5em);
 }
 
-@media only screen and (min-width: 640px) {
-  .button-grid {
-    max-width: var(--width);
-  }
+.grid-cluster.alt-align {
+  justify-content: end;
 }
 
-.button-grid #status {
+.grid-cluster * {
+  width: 100%;
+  height: 100%;
+}
+
+.directional-cluster {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: repeat(3, var(--button-width, 4em));
+  grid-template-rows: repeat(3, var(--button-width, 4em));
+  margin: calc(var(--button-gap, 0.5em) * 2);
+}
+
+.directional-cluster.alt-align {
+  justify-content: end;
+}
+
+.directional-cluster button {
+  width: 100%;
+  height: 100%;
+}
+
+.directional-up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.directional-up button {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
+}
+
+.directional-left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.directional-left button {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+
+.directional-select {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.directional-select button {
+  border-radius: 0;
+  border: none;
+}
+
+.directional-right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.directional-right button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
+}
+
+.directional-down {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.directional-down button {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
+}
+
+#status {
   border: 1px solid #222;
   background-color: #222;
   width: 1em;
-  margin-left: calc(var(--width) - 1em);
   height: 0.5em;
-  margin-bottom: 0.5em;
+  margin: var(--button-gap);
+  float: right;
+  cursor: pointer;
 }
 
-.button-grid #response {
+#status.alt-align {
+  float: left;
+}
+
+#response {
   position: absolute;
   display: none;
-  border: 1px solid #222;
-  background-color: #333;
-  width: min(50vw, var(--width));
-  height: min(50vh, var(--width));
-  filter: drop-shadow(0.5em 0.5em 0.5em #111);
+  border: 1px solid #ddd;
+  width: var(--response-width, 10rem);
+  height: var(--response-height, 16rem);
+  right: 0.5rem;
+  top: 3rem;
   z-index: 65534;
 }
 
-.button-grid button#response-close {
+#response.alt-align {
+  left: 0.5rem;
+}
+
+button#response-close {
   position: absolute;
   display: none;
-  font-size: 12pt;
-  width: 1em;
-  min-height: 1em;
-  padding-left: 0.25em;
-  padding-right: 1em;
-  margin-left: calc(min(50vw, var(--width)) - 1em);
+  font-size: 10pt;
+  text-align: center;
+  padding: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  --button-bg: #933;
+  --button-fg: white;
+  --button-radius: 0;
+  border: 1px #822 solid;
+  right: 0.5rem;
+  top: 3rem;
   z-index: 65535;
 }
 
-.button-grid .row {
-  display: grid;
-  justify-content: center;
-  grid-template-columns: repeat(var(--cols), 1fr);
-  grid-column-gap: 0.5em;
-  padding-bottom: 0.5em;
+button#response-close.alt-align {
+  left: calc(var(--response-width, 10rem) + 0.5rem - 1.25rem + 2px);
 }
 
-.button-grid .row .fill {
-  display: table-cell;
-  width: calc(var(--width) / var(--cols) - 0.5em * (var(--cols) - 1));
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+    color: white;
+  }
+
+  h1 {
+    border-bottom: 1px #333 dotted;
+  }
+
+  .message {
+    border: 1px #222 dashed;
+    background-color: #333;
+  }
+
+  a#alt-toggle {
+    color: #666;
+  }
+
+  #response {
+    border: 1px solid #222;
+    background-color: black;
+  }
 }

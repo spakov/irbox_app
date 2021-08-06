@@ -12,7 +12,7 @@
 
       // Sony VCR stop
       const MENU =  { 'p': 0x13, 'a': 0xb,    'c': 0x18, 'b': 0xc, 'r': 0x3 };
-      const HOME =  { 'p': 0x13, 'a': 0xb,    'c': 0x18, 'b': 0xc, 'r': 0x12 };
+      const HOME =  { 'p': 0x13, 'a': 0xb,    'c': 0x18, 'b': 0xc, 'r': 0x9 };
       // Sony VCR 2
       const UP =    { 'p': 0x13, 'a': 0xb,    'c': 0x1,  'b': 0xc, 'r': 0x3 };
       // Sony VCR 4
@@ -38,52 +38,64 @@
       const WIN =   { 'p': 0x08, 'a': 0x80,   'c': 0x1,            'r': 0x0 };
       const APPLE = { 'p': 0x08, 'a': 0x80,   'c': 0x3,            'r': 0x0 };
     </script>
-    <a href="{{ url_for('index_blueprint.index') }}" class="back">←</a>
-    <div class="button-grid" style="--width: min(100vw, 300px);">
-      <div id="status" onclick="showResponse();"></div>
-      <iframe id="response"></iframe>
-      <button id="response-close" onclick="showResponse(false);">✕</button>
-      <p>Projector</p>
-      <div class="row" style="--cols: 2;">
-        <button type="button" style="--bg: #0c0;" onclick="tx(ON);">On</button>
+    <a id="back" href="{{ url_for('index_blueprint.index') }}" class="alt-align" title="Back to remotes list">🔙</a>
+    <a id="alt-toggle" class="alt-align" onclick="toggleAlt();" title="Toggle alignment">↹</a>
+    <div style="--response-width: 10rem; --response-height: 16rem;">
+      <iframe id="response" class="alt-align"></iframe>
+      <button id="response-close" class="alt-align" onclick="showResponse(false);">✕</button>
+    </div>
+    <div id="remote" class="alt-align" style="--legend-font-size: 12pt; --legend-fg: #999; --remote-bg: #333; --remote-fg: white; --button-bg: #333; --button-fg: white; --button-width: 4em; --button-height: 2em; --button-gap: 0.5em; --button-radius: 0.5ex; --button-font-size: 11pt; max-width: calc(var(--button-width) * 3 + var(--button-gap) * 4);">
+      <div id="status" class="alt-align" onclick="toggleResponse();"></div>
+      <legend class="alt-align">Projector</legend>
+      <div class="grid-cluster alt-align">
         <button type="button" onclick="tx(OFF);">Off</button>
+        <div></div>
+        <button type="button" style="--button-bg: #0c0;" onclick="tx(ON);">On</button>
       </div>
-      <p>Sound Bar</p>
-      <div class="row" style="--cols: 3;">
+      <legend class="alt-align">Volume</legend>
+      <div class="grid-cluster alt-align">
         <button type="button" class="fill" onclick="tx(MUTE);">Mute</button>
-        <button type="button" class="fill" onclick="tx(VDOWN);">-</button>
+        <button type="button" class="fill" onclick="tx(VDOWN);">−</button>
         <button type="button" class="fill" onclick="tx(VUP);">+</button>
       </div>
-      <p>Apple TV</p>
-      <div class="row" style="--cols: 2;">
-        <button type="button" onclick="tx(MENU);">Menu</button>
+      <legend class="alt-align">Apple TV</legend>
+      <div class="grid-cluster alt-align">
         <button type="button" onclick="tx(HOME);">Home</button>
+        <div></div>
+        <button type="button" onclick="tx(MENU);">Menu</button>
       </div>
-      <div class="row" style="--cols: 1;">
-        <button type="button" style="--bg: #008;" onclick="tx(UP);">Up</button>
+      <div class="directional-cluster alt-align" style="--button-width: 3em; --button-bg: #609; margin: var(--button-gap) calc(var(--button-gap) * 5);">
+        <div class="directional-up">
+          <button type="button" onclick="tx(UP);"></button>
+        </div>
+        <div class="directional-left">
+          <button type="button" onclick="tx(LEFT);"></button>
+        </div>
+        <div class="directional-select" style="background-color: #222;">
+          <button type="button" style="border-radius: 0.5ex;" onclick="tx(OK);">OK</button>
+        </div>
+        <div class="directional-right">
+          <button type="button" onclick="tx(RIGHT);"></button>
+        </div>
+        <div class="directional-down">
+          <button type="button" onclick="tx(DOWN);"></button>
+        </div>
       </div>
-      <div class="row" style="--cols: 3;">
-        <button type="button" style="--bg: #008;" onclick="tx(LEFT);">Left</button>
-        <button type="button" style="--bg: #008;" onclick="tx(OK);">OK</button>
-        <button type="button" style="--bg: #008;" onclick="tx(RIGHT);">Right</button>
-      </div>
-      <div class="row" style="--cols: 1;">
-        <button type="button" style="--bg: #008;" onclick="tx(DOWN);">Down</button>
-      </div>
-      <div class="row" style="--cols: 3;">
-        <button type="button" class="fill" onclick="tx(REW);">Rew</button>
+      <div class="grid-cluster alt-align">
+        <button type="button" class="fill" style="--button-font-size: 10pt;" onclick="tx(REW);">Rewind</button>
         <button type="button" class="fill" onclick="tx(PLAY);">Play</button>
-        <button type="button" class="fill" onclick="tx(FFW);">Ffw</button>
+        <button type="button" class="fill" style="--button-font-size: 8pt;" onclick="tx(FFW);">Fast Forward</button>
       </div>
-      <div class="row" style="--cols: 2;">
-        <button type="button" class="fill" onclick="tx(BACK);">Back</button>
-        <button type="button" class="fill" onclick="tx(FWD);">Fwd</button>
+      <div class="grid-cluster alt-align">
+        <button type="button" class="fill" style="--button-font-size: 8pt;" onclick="tx(BACK);">Skip Back</button>
+        <div></div>
+        <button type="button" class="fill" style="--button-font-size: 8pt;" onclick="tx(FWD);">Skip Forward</button>
       </div>
-      <p>Input</p>
-      <div class="row" style="--cols: 3;">
+      <legend class="alt-align">Input</legend>
+      <div class="grid-cluster alt-align">
         <button type="button" class="fill" onclick="tx(NEXT);">Next</button>
-        <button type="button" class="fill" style="--bg: #08f;" onclick="tx(WIN);">Win</button>
-        <button type="button" class="fill" style="--bg: #880;" onclick="tx(APPLE);">Apple</button>
+        <button type="button" class="fill" style="--button-font-size: 8pt;" onclick="tx(WIN);">Computer</button>
+        <button type="button" class="fill" style="--button-font-size: 8pt;" onclick="tx(APPLE);">Apple TV</button>
       </div>
     </div>
 {% endblock %}
