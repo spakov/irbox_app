@@ -30,6 +30,17 @@ def tx():
     # Convert protocol to decimal
     try:
         protocol_decimal = int(protocol[2:], 16)
+    except TypeError:
+        # Malformed arguments
+        return redirect(url_for(
+                'tx_blueprint.tx_failure',
+                m='Malformed arguments',
+                p=protocol,
+                a=address,
+                c=command,
+                r=repeats,
+                b=bits
+        ))
     except ValueError:
         protocol_decimal = Protocol.UNKNOWN.value
 

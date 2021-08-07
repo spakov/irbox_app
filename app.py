@@ -8,6 +8,7 @@ from app.index import index_blueprint
 from app.invalid import invalid_blueprint
 from app.nop import nop_blueprint
 from app.remote import remote_blueprint
+from app.status import status_blueprint
 from app.tx import tx_blueprint
 
 # Configure application
@@ -22,6 +23,7 @@ app.register_blueprint(index_blueprint);
 app.register_blueprint(invalid_blueprint);
 app.register_blueprint(nop_blueprint);
 app.register_blueprint(remote_blueprint);
+app.register_blueprint(status_blueprint);
 app.register_blueprint(tx_blueprint);
 
 @app.before_first_request

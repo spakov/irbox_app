@@ -96,14 +96,17 @@ function toggleAlt() {
  * Toggles alternate alignment of a single element.
  *
  * Args:
+ *     element (Object): The element of which to modify alignment.
  *     recurse (bool): Whether or not to toggle child elements as well.
  */
 function _toggleAltElement(element, recurse = false) {
   if (!element) return;
 
+  if (element.className.search(/no-alt/) != -1) return;
+
   if (element.className.search(/alt-align/) != -1) {
-    element.className = element.className.replaceAll(/ ?alt-align ?/g, '')
-  } else if (element.className.search(/no-alt/) == -1) {
+    element.className = element.className.replaceAll(/ ?alt-align/g, '')
+  } else {
     if (element.className.length == 0) {
       element.className = 'alt-align'
     } else {
