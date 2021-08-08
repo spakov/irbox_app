@@ -8,10 +8,11 @@ import threading
 import time
 
 from irbox.counter import count_generator
+from irbox.errors import IrboxError
 from irbox.errors import MalformedArgumentsError
 from irbox.message import Message
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('irbox')
 
 class IrBox:
     """
@@ -45,8 +46,7 @@ class IrBox:
             port (int): The port to connect to.
 
         Raises:
-            TimeoutError: Timeout occurred when attempting to establish socket
-                connection.
+            IrboxError: An IR box error.
         """
 
         # No reader thread until we do a connect()
@@ -68,8 +68,8 @@ class IrBox:
             self.port = port
             try:
                 self.connect(host, port)
-            except TimeoutError as timeout_error:
-                raise timeout_error
+            except IrboxError as irbox_error:
+                raise irbox_error
 
     def __del__(self):
         """
@@ -104,8 +104,7 @@ class IrBox:
                 connection for later.
 
         Raises:
-            TimeoutError: Timeout occurred when attempting to establish socket
-                connection.
+            IrboxError: An IR box error.
         """
 
         # Note host and port for future _reconnect()
@@ -125,9 +124,15 @@ class IrBox:
         try:
             self._socket.connect((host, port))
         except TimeoutError as timeout_error:
-            raise timeout_error
+            raise IrboxError(timeout_error)
         except socket.timeout as timeout_error:
-            raise TimeoutError
+            raise IrboxError(TimeoutError)
+        except PermissionError as permission_error:
+            logger.warning('Permission error')
+            raise IrboxError(permission_error)
+        except ConnectionRefusedError as connection_refused_error:
+            logger.warning('Connection refused')
+            raise IrboxError(connection_refused_error)
 
         # Disable timeout for reading on a separate thread
         self._socket.settimeout(None)
@@ -155,9 +160,15 @@ class IrBox:
         Returns:
             bool: A value indicating whether or not the IR box responded
                 positively to the nop command.
+
+        Raises:
+            IrboxError: An IR box error.
         """
 
-        return self._send_message('nop')
+        try:
+            return self._send_message('nop')
+        except IrboxError as irbox_error:
+            raise irbox_error
 
     def tx(self, args):
         """
@@ -172,6 +183,7 @@ class IrBox:
                 positively to the tx command.
 
         Raises:
+            IrboxError: An IR box error.
             MalformedArgumentsError: Unable to parse arguments.
         """
 
@@ -179,6 +191,8 @@ class IrBox:
             message = ','.join(args)
             message = f'tx({message})'
             return self._send_message(message)
+        except IrboxError as irbox_error:
+            raise irbox_error
         except TypeError:
             raise MalformedArgumentsError
 
@@ -195,9 +209,15 @@ class IrBox:
         Returns:
             bool: A value indicating whether or not the IR box responded
                 positively to the tx command.
+
+        Raises:
+            IrboxError: An IR box error.
         """
 
-        return self._send_message('rx')
+        try:
+            return self._send_message('rx')
+        except IrboxError as irbox_error:
+            raise irbox_error
     
     def getRxMessage(self):
         """
@@ -210,9 +230,15 @@ class IrBox:
         Returns:
             str?: The tx() command read from the IR box, or None if it has not
                 written one yet.
+
+        Raises:
+            IrboxError: An IR box error.
         """
 
-        # TODO: implement me
+        try:
+            return self._send_message('')
+        except IrboxError as irbox_error:
+            raise irbox_error
 
     def norx(self):
         """
@@ -224,9 +250,15 @@ class IrBox:
         Returns:
             bool: A value indicating whether or not the IR box responded
                 positively to the norx command.
+
+        Raises:
+            IrboxError: An IR box error.
         """
 
-        return self._send_message('rx')
+        try:
+            return self._send_message('norx')
+        except IrboxError as irbox_error:
+            raise irbox_error
 
     def invalid(self):
         """
@@ -237,13 +269,22 @@ class IrBox:
         Returns:
             bool: A value indicating whether or not the IR box responded
                 positively to the invalid command.
+
+        Raises:
+            IrboxError: An IR box error.
         """
 
-        return self._send_message('invalid')
+        try:
+            return self._send_message('invalid')
+        except IrboxError as irbox_error:
+            raise irbox_error
 
     def _close(self):
         """
         Terminates the connection.
+
+        Raises:
+            IrboxError: An IR box error.
         """
 
         # Close socket connections
@@ -255,7 +296,7 @@ class IrBox:
                 # errno 57 means the socket is already closed, so we only care
                 # about other errors
                 if os_error.errno != 57:
-                    raise os_error
+                    raise IrboxError(os_error)
 
             self._socket = None
 
@@ -268,6 +309,7 @@ class IrBox:
             if logger is not None:
                 logger.info('Connection closed')
 
+    # TODO: raise exceptions instead of using strings
     def _send_message(self, message):
         """
         Sends a message to the IR box. Use this method to communicate with the
@@ -283,6 +325,9 @@ class IrBox:
             bool:
                 A value indicating whether or not a positive response was
                 received (if validate) within _TIMEOUT
+
+        Raises:
+            IrboxError: An IR box error.
         """
 
         # Track message count internally for now
@@ -354,16 +399,15 @@ class IrBox:
         This is a low-level method and not meant to be called directly.
 
         Raises:
-            TimeoutError: Timeout occurred when attempting to establish socket
-                connection.
+            IrboxError: An IR box error.
         """
 
         # Close and connect again
         self._close()
         try:
             self.connect(self.host, self.port)
-        except TimeoutError as timeout_error:
-            raise timeout_error
+        except IrboxError as irbox_error:
+            raise irbox_error
 
     def _read(self):
         """
@@ -374,6 +418,9 @@ class IrBox:
         run forever in its own thread.
 
         This is a low-level method and not meant to be called directly.
+
+        Raises:
+            IrboxError: An IR box error.
         """
 
         while True:
@@ -395,7 +442,7 @@ class IrBox:
                     if os_error.errno == 57:
                         byte = b''
                     else:
-                        raise os_error
+                        raise IrboxError(os_error)
 
                 if byte == b'':
                     # Connection closed
@@ -422,8 +469,7 @@ class IrBox:
             int: The number of bytes written.
 
         Raises:
-            TimeoutError: Timeout occurred when attempting to establish socket
-                connection.
+            IrboxError: An IR box error.
         """
 
         sent = 0
@@ -437,8 +483,8 @@ class IrBox:
         if self._socket is None:
             try:
                 self._reconnect()
-            except TimeoutError as timeout_error:
-                raise timeout_error
+            except IrboxError as irbox_error:
+                raise irbox_error
 
         # Append newline if not present
         if message[:-2] != b'\r\n':
@@ -449,14 +495,14 @@ class IrBox:
             try:
                 sent = self._socket.send(message)
             except TimeoutError as timeout_error:
-                raise timeout_error
+                raise IrboxError(timeout_error)
             except socket.timeout:
-                raise TimeoutError
+                raise IrboxError(TimeoutError)
             except BrokenPipeError:
                 try:
                     self._reconnect()
                 except TimeoutError as timeout_error:
-                    raise timeout_error
+                    raise IrboxError(timeout_error)
 
                 continue
 

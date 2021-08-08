@@ -9,57 +9,57 @@ from flask import render_template
 from flask import request
 from flask import url_for
 
-nop_blueprint = Blueprint('nop_blueprint', __name__)
+norx_blueprint = Blueprint('norx_blueprint', __name__)
 
-@nop_blueprint.route('/nop')
-def nop():
+@norx_blueprint.route('/norx')
+def norx():
     """
-    nop command.
+    norx command.
     """
 
     try:
-        success = irbox.nop()
+        success = irbox.norx()
         message = irbox.response
     except IrboxError as irbox_error:
         success = False
         message = irbox_error.message
 
     return redirect(url_for(
-            'nop_blueprint.nop_success' if success else 'nop_blueprint.nop_failure',
-            m=message
+        'norx_blueprint.norx_success' if success else 'norx_blueprint.norx_failure',
+        m = message
     ))
 
-@nop_blueprint.route('/nop/success')
-def nop_success():
+@norx_blueprint.route('/norx/success')
+def norx_success():
     """
-    Successful nop.
+    Successful norx.
     """
 
     message = request.args.get('m')
 
     response = make_response(
             render_template(
-                    "nop.html",
-                    success=True,
-                    message=message
+                "norx.html",
+                success=True,
+                message=message
             )
     );
     response.headers.set('Irbox-Success', 'true');
     return response;
 
-@nop_blueprint.route('/nop/failure')
-def nop_failure():
+@norx_blueprint.route('/norx/failure')
+def norx_failure():
     """
-    Failed nop.
+    Failed norx.
     """
 
     message = request.args.get('m')
 
     response = make_response(
             render_template(
-                    "nop.html",
-                    success=False,
-                    message=message
+                "norx.html",
+                success=False,
+                message=message
             )
     );
     response.headers.set('Irbox-Success', 'false');

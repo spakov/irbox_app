@@ -1,0 +1,16 @@
+{% extends 'remote-base.html' %}
+{% block remote_content %}
+    <div>
+      <iframe id="response" class="alt-align"></iframe>
+      <button id="response-close" class="alt-align" onclick="showResponse(false);">✕</button>
+    </div>
+    <div id="remote" class="alt-align">
+      <div id="status" class="alt-align" onclick="toggleResponse();"></div>
+      <legend class="alt-align">Demo Remote</legend>
+      <div class="grid-cluster alt-align">
+        <button type="button" onclick="nop();">A</button>
+        <button type="button" onclick="nop();">B</button>
+        <button type="button" onclick="nop();">C</button>
+      </div>
+    </div>
+{% endblock %}

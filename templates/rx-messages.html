@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Received Messages{% endblock %}
+{% block content %}
+    <script src="{{ url_for('static', filename='irbox.js') }}"></script>
+    <script>
+      /* After page is loaded */
+      function afterLoad() {
+        /* Auto scroll to bottom, but only if the user is scrolled to the
+           bottom of the page. This does not appear to work on mobile. */
+        setInterval(function() {
+          if (
+            (window.innerHeight + window.pageYOffset)
+            >= document.body.offsetHeight
+          ) {
+            window.scrollTo (0, document.body.scrollHeight);
+          }
+        }, 10);
+      }
+    </script>
+    <h1>Received Messages</h1>
+    <p>After starting, infrared commands will be displayed below as they are received. Messages will be received four times per second.</p>
+    <ul id="messages">
+    </ul>
+{% endblock %}

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% block remote_css %}{% endblock %}
+{% block remote_script %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>

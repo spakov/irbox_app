@@ -77,10 +77,59 @@ dl dd {
   margin: 0;
 }
 
+ul#remotes {
+  display: block;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  height: auto;
+  white-space: nowrap;
+}
+
+ul#remotes > * {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0.5em;
+  white-space: normal;
+}
+
+ul#remotes li figure, ul#remotes li figure * {
+  margin: 0;
+}
+
+ul#remotes figure img {
+  max-width: 40vw;
+  max-height: 75vh;
+}
+
+@media only screen and (max-device-width: 480px) and (orientation: landscape) {
+  ul#remotes figure img {
+    max-height: 50vh;
+  }
+}
+
+#tools {
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 1rem);
+}
+
+#tools ul, #tools li {
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
+}
+
+#tools li {
+  float: left;
+  padding-right: 2em;
+}
+
 #remote {
   border: 1px #222 solid;
   background-color: var(--remote-bg, #333);
   color: var(--remote-fg, white);
+  max-width: calc(var(--button-width, 3rem) * 3 + var(--button-gap, 0.5rem) * 4);
+  z-index: 65535
 }
 
 #remote.alt-align {
@@ -96,7 +145,7 @@ fieldset {
 legend {
   display: table;
   margin: var(--button-gap, 0.5em);
-  margin-top: calc(var(--buton-gap, 0.5em) * 2);
+  margin-top: calc(var(--button-gap, 0.5em) * 2);
   color: var(--legend-fg, inherit);
   font-size: var(--legend-font-size, inherit);
   font-weight: 400;
@@ -120,23 +169,30 @@ button {
   border-bottom: 0.4ex solid #222;
   margin: 0;
   padding: 0 0.5em;
-  cursor: pointer;
   touch-action: manipulation;
 }
 
-button:hover {
+button:not([disabled]) {
+  cursor: pointer;
+}
+
+button[disabled] {
+  filter: brightness(0.5);
+}
+
+button:not([disabled]):hover {
   background-color: var(--button-bg, #333) !important;
   filter: brightness(1.2);
 }
 
-button:active {
+button:not([disabled]):active {
   background-color: var(--button-bg, #333) !important;
   filter: brightness(0.8);
 }
 
 .grid-cluster {
   display: grid;
-  grid-gap: var(--button-gap, 0rem);
+  grid-gap: var(--button-gap, 0.5rem);
   grid-template-columns: repeat(auto-fit, var(--button-width, 3rem));
   grid-template-rows: repeat(auto-fit, var(--button-height, 2rem));
   margin: var(--button-gap, 0.5rem);
@@ -148,7 +204,7 @@ button:active {
 
 .grid-cluster * {
   width: var(--button-width, 3rem);
-  height: var(--button-height, 3rem);
+  height: var(--button-height, 2rem);
 }
 
 .v-rocker-cluster {
@@ -256,7 +312,7 @@ button:active {
   background-color: #222;
   width: 1rem;
   height: 0.5rem;
-  margin: var(--button-gap);
+  margin: var(--button-gap, 0.5rem);
   float: right;
   cursor: pointer;
 }
@@ -268,9 +324,10 @@ button:active {
 #response {
   position: absolute;
   display: none;
+  overflow: auto;
   border: 1px solid #ddd;
   width: var(--response-width, 10rem);
-  height: var(--response-height, 16rem);
+  height: var(--response-height, 20rem);
   right: 0.5rem;
   top: 3rem;
   z-index: 65534;

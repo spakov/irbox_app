@@ -1,0 +1,6 @@
+/* font-stretch doesn't seem to work on WebKit */
+@media only screen and (max-device-width: 480px) {
+  .condensed {
+    font-size: 7pt !important;                                            
+  }
+}

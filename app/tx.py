@@ -1,5 +1,6 @@
 from app import irbox
 
+from irbox.errors import IrboxError
 from irbox.errors import MalformedArgumentsError
 from irbox.protocol import Protocol
 
@@ -74,11 +75,10 @@ def tx():
     # Send the tx() command
     try:
         success = irbox.tx(args)
-    except MalformedArgumentsError:
-        # Arguments are malformed
+    except IrboxError as irbox_error:
         return redirect(url_for(
                 'tx_blueprint.tx_failure',
-                m='Malformed arguments',
+                m=irbox_error.message,
                 p=protocol,
                 a=address,
                 c=command,

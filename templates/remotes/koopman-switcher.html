@@ -1,23 +1,5 @@
-{% extends 'base.html' %}
-{% block title %}Koopman Switcher{% endblock %}
-{% block content %}
-    <script src="{{ url_for('static', filename='irbox.js') }}"></script>
-    <script>
-      const PWR   = { 'p': 0x08, 'a': 0x80, 'c': 0x1,  'r': 0x0 };
-      const IN1   = { 'p': 0x08, 'a': 0x80, 'c': 0x1,  'r': 0x0 };
-      const IN2   = { 'p': 0x08, 'a': 0x80, 'c': 0x3,  'r': 0x0 };
-      const IN3   = { 'p': 0x08, 'a': 0x80, 'c': 0x3,  'r': 0x0 };
-      const IN4   = { 'p': 0x08, 'a': 0x80, 'c': 0x3,  'r': 0x0 };
-      const IN5   = { 'p': 0x08, 'a': 0x80, 'c': 0x3,  'r': 0x0 };
-      const PREV  = { 'p': 0x08, 'a': 0x80, 'c': 0x1f, 'r': 0x0 };
-      const NEXT  = { 'p': 0x08, 'a': 0x80, 'c': 0x1f, 'r': 0x0 };
-    </script>
-    <a id="back" href="{{ url_for('index_blueprint.index') }}" class="alt-align" title="Back to remotes list">🔙</a>
-    <a id="alt-toggle" class="alt-align" onclick="toggleAlt();" title="Toggle alignment">↹</a>
-    <div style="--response-width: 10rem; --response-height: 16rem;">
-      <iframe id="response" class="alt-align"></iframe>
-      <button id="response-close" class="alt-align" onclick="showResponse(false);">✕</button>
-    </div>
+{% extends 'remote-base.html' %}
+{% block remote_content %}
     <div id="remote" class="alt-align" style="--legend-font-size: 9pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-bg: #666; --button-fg: white; --button-width: 2em; --button-height: 2em; --button-gap: 0.4em; --button-radius: 0.5ex; --button-font-size: 11pt; max-width: calc(var(--button-width) * 5 + var(--button-gap) * 6); border-radius: 0.5em 0.5em 1em 1em;">
       <div id="status" onclick="toggleResponse();"></div>
       <div style="height: 1em;"></div>

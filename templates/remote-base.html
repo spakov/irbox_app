@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}{{ remote_name }}{% endblock %}
+{% block remote_script %}
+    <script src="{{ url_for('static', filename='irbox.js') }}"></script>
+{% if remote_script %}
+    <script src="{{ remote_script }}"></script>
+{% endif %}
+{% endblock %}
+{% block remote_css %}
+{% if remote_css %}
+    <link rel="stylesheet" href="{{ remote_css }}">
+{% endif %}
+{% endblock %}
+{% block content %}
+    <a id="back" href="{{ url_for('index_blueprint.index') }}" class="alt-align" title="Back to remotes list">🔙</a>
+    <a id="alt-toggle" class="alt-align" onclick="toggleAlt();" title="Switch alignment">↹</a>
+    <div>
+      <iframe id="response" class="alt-align"></iframe>
+      <button id="response-close" class="alt-align" onclick="showResponse(false);">✕</button>
+    </div>
+{% block remote_content %}{% endblock %}
+{% endblock %}

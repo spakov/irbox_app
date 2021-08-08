@@ -1,12 +1,26 @@
 {% extends 'base.html' %}
 {% block title %}IR Box{% endblock %}
 {% block content %}
-    <p>Select remote:</p>
-    <ul>
-      <li><a href="{{ url_for('remote_blueprint.remote', remote_id='living-room') }}">Living Room</a></li>
-      <li><a href="{{ url_for('remote_blueprint.remote', remote_id='epson-165652600') }}">Epson Projector</a></li>
-      <li><a href="{{ url_for('remote_blueprint.remote', remote_id='sony-rm-anp109') }}">Sony Sound Bar</a></li>
-      <li><a href="{{ url_for('remote_blueprint.remote', remote_id='koopman-switcher') }}">Koopman Switcher</a></li>
-      <li><a href="{{ url_for('remote_blueprint.remote', remote_id='bedycoon') }}">Bedycoon</a></li>
+    <h1>Remotes</h1>
+    <ul id="remotes">
+{% for remote_id, remote_data in remotes.items() %}
+{# This is hackish, but works to unpck a tuple #}
+{% set remote_name = remote_data.0 %}
+{% set remote_image = remote_data.1 %}
+      <li>
+        <figure>
+          <figcaption><a href="{{ url_for('remote_blueprint.remote', remote_id=remote_id) }}">{{ remote_name }}</a></figcaption>
+          {% if remote_image %}
+          <a href="{{ url_for('remote_blueprint.remote', remote_id=remote_id) }}"><img src="{{ remote_image }}"></a>
+          {% endif %}
+        </figure>
+      </li>
+{% endfor %}
     </ul>
+    <div id="tools">
+      <h1>Tools</h1>
+      <ul>
+        <li><a href="{{ url_for('rx_blueprint.rx_viewer') }}">Receive Mode</a></li>
+      </ul>
+    </div>
 {% endblock %}

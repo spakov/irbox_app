@@ -1,59 +1,5 @@
-{% extends 'base.html' %}
-{% block title %}Sony Sound Bar{% endblock %}
-{% block content %}
-    <script src="{{ url_for('static', filename='irbox.js') }}"></script>
-    <script>
-      const TVMUT = { };
-      const TVINP = { };
-      const TVPWR = { };
-      const POWER = { };
-      const TVVLU = { };
-      const TVVLD = { };
-      const TVCHU = { };
-      const TVCHD = { };
-      const INPTN = { };
-      const INPTP = { };
-      const STD   = { };
-      const MOVIE = { };
-      const GAME  = { };
-      const MUSIC = { };
-      const PAUDO = { };
-      const STREO = { };
-      const NIGHT = { };
-      const DSPLY = { };
-      const MUTNG = { };
-      const UP    = { };
-      const LEFT  = { };
-      const ENTER = { };
-      const RIGHT = { };
-      const DOWN  = { };
-      const VOLUP = { };
-      const VOLDN = { };
-      const RETRN = { };
-      const AMPMU = { };
-      const BACK  = { };
-      const PAUSE = { };
-      const FWD   = { };
-      const REW   = { };
-      const PLAY  = { };
-      const FFW   = { };
-      const PAIRG = { };
-      const STOP  = { };
-    </script>
-    <style>
-      /* font-stretch doesn't seem to work on WebKit */
-      @media only screen and (max-device-width: 480px) {
-        .condensed {
-          font-size: 7pt !important;
-        }
-      }
-    </style>
-    <a id="back" href="{{ url_for('index_blueprint.index') }}" class="alt-align" title="Back to remotes list">🔙</a>
-    <a id="alt-toggle" class="alt-align" onclick="toggleAlt();" title="Toggle alignment">↹</a>
-    <div style="--response-width: 10rem; --response-height: 16rem;">
-      <iframe id="response" class="alt-align" src="{{ url_for('status_blueprint.status') }}"></iframe>
-      <button id="response-close" class="alt-align" title="Close" onclick="showResponse(false);">✕</button>
-    </div>
+{% extends 'remote-base.html' %}
+{% block remote_content %}
     <div id="remote" class="alt-align" style="--legend-font-size: 9pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-width: 3.5rem; --button-height: 1.5rem; --button-gap: 1rem; --button-radius: 0.5ex; --button-font-size: 9pt; max-width: calc(var(--button-width) * 3 + var(--button-gap) * 4);">
       <div style="height: 2em;">
         <div id="status" class="alt-align" style="margin-bottom: 0;" onclick="toggleResponse();"></div>
@@ -63,7 +9,7 @@
         <span style="margin-top: auto; margin-bottom: calc(-1 * var(--button-gap));"><br>INPUT</span>
         <span style="margin-top: auto; margin-bottom: calc(-1 * var(--button-gap));">TV<br>| ⁄ ⌽</span>
         <span style="margin-top: auto; margin-bottom: calc(-1 * var(--button-gap)); font-size: 10pt; color: white;">| ⁄ ⌽</span>
-        <button type="button" style="margin-top: calc((var(--button-width) - var(--button-height)) / 2);" onclick="tx(TVMTG);"></button>
+        <button type="button" style="margin-top: calc((var(--button-width) - var(--button-height)) / 2);" onclick="tx(TVMUT);"></button>
         <button type="button" style="margin-top: calc((var(--button-width) - var(--button-height)) / 2);" onclick="tx(TVINP);"></button>
         <button type="button" style="margin-top: calc((var(--button-width) - var(--button-height)) / 2); --button-bg: #090;" onclick="tx(TVPWR);"></button>
         <button type="button" style="--button-bg: #090; --button-height: var(--button-width); border-radius: var(--button-width);" onclick="tx(POWER);"></button>

@@ -1,5 +1,7 @@
 from app import irbox
 
+from irbox.errors import IrboxError
+
 from flask import Blueprint
 from flask import make_response
 from flask import redirect
@@ -15,12 +17,15 @@ def invalid():
     Invalid command (for debugging purposes).
     """
 
-    if irbox.invalid():
-        endpoint = 'invalid_blueprint.invalid_success'
-        message = None
-    else:
-        endpoint = 'invalid_blueprint.invalid_failure'
-        message = irbox.response
+    try:
+        if irbox.invalid():
+            endpoint = 'invalid_blueprint.invalid_success'
+            message = None
+        else:
+            endpoint = 'invalid_blueprint.invalid_failure'
+            message = irbox.response
+    except IrboxError as irbox_error:
+        message = irbox_error.message
 
     return redirect(url_for(
             endpoint,
