@@ -21,7 +21,9 @@ class IrBox:
     Constants:
         _WAIT: Number of seconds to wait each loop when reading data.
         _TIMEOUT: Timeout (in seconds) for connection and to wait for messages
-            to be received.
+            to be received. Recommend a value no less than 5 to account for
+            transmissions with many repeats (e.g., simulating holding a
+            button).
 
     Attributes:
         _socket (socket): TCP socket.
@@ -35,7 +37,7 @@ class IrBox:
     """
 
     _WAIT = 0.01
-    _TIMEOUT = 1
+    _TIMEOUT = 5
 
     def __init__(self, host=None, port=None):
         """
