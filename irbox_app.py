@@ -1,6 +1,12 @@
+"""
+Flask app.
+"""
+
 import logging
 
 from flask import Flask
+
+from irbox.errors import IrboxError
 
 from app import irbox
 from app.error import error_blueprint
@@ -25,7 +31,11 @@ app.config.from_object('app.config.DefaultConfig')
 try:
     app.config.from_envvar('IRBOX_CONFIG')
 except RuntimeError:
-    logger.warning('[1;31mWARNING[0m: The IRBOX_CONFIG environment variable is not set. Proceeding with default configuration. Do not expect this to work well!')
+    logger.warning(
+            '[1;31mWARNING[0m: The IRBOX_CONFIG environment variable is '
+            'not set. Proceeding with default configuration. Do not expect '
+            'this to work well!'
+    )
 
 # Enable block trimming to produce nicer HTML
 app.jinja_env.trim_blocks = True
@@ -40,7 +50,7 @@ app.register_blueprint(norx_blueprint)
 app.register_blueprint(remote_blueprint)
 app.register_blueprint(rx_blueprint)
 app.register_blueprint(status_blueprint)
-app.register_blueprint(tx_blueprint);
+app.register_blueprint(tx_blueprint)
 
 @app.before_first_request
 def init():

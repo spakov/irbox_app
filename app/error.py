@@ -1,4 +1,6 @@
-from app import irbox
+"""
+Error endpoints.
+"""
 
 from flask import Blueprint
 from flask import render_template
@@ -17,4 +19,4 @@ def error():
     return render_template(
             "error.html",
             message=message
-    );
+    )

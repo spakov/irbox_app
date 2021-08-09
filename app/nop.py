@@ -1,6 +1,6 @@
-from app import irbox
-
-from irbox.errors import IrboxError
+"""
+nop command endpoints.
+"""
 
 from flask import Blueprint
 from flask import make_response
@@ -8,6 +8,10 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
+
+from app import irbox
+
+from irbox.errors import IrboxError
 
 nop_blueprint = Blueprint('nop_blueprint', __name__)
 
@@ -43,9 +47,9 @@ def nop_success():
                     success=True,
                     message=message
             )
-    );
-    response.headers.set('Irbox-Success', 'true');
-    return response;
+    )
+    response.headers.set('Irbox-Success', 'true')
+    return response
 
 @nop_blueprint.route('/nop/failure')
 def nop_failure():
@@ -61,6 +65,6 @@ def nop_failure():
                     success=False,
                     message=message
             )
-    );
-    response.headers.set('Irbox-Success', 'false');
-    return response;
+    )
+    response.headers.set('Irbox-Success', 'false')
+    return response

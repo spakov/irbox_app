@@ -1,6 +1,8 @@
-import os
+"""
+Index endpoint.
+"""
 
-from app import irbox
+import os
 
 from flask import current_app
 from flask import Blueprint

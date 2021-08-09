@@ -1,18 +1,21 @@
-from app import irbox
-
-from irbox.errors import IrboxError
+"""
+rx command endpoints.
+"""
 
 from flask import Blueprint
 from flask import make_response
 from flask import redirect
 from flask import render_template
-from flask import request
 from flask import url_for
+
+from app import irbox
+
+from irbox.errors import IrboxError
 
 rx_blueprint = Blueprint('rx_blueprint', __name__)
 
 @rx_blueprint.route('/rx')
-def rx():
+def rx(): # pylint: disable=invalid-name
     """
     rx command.
     """
@@ -40,9 +43,9 @@ def rx_success():
                 "rx-messages.html",
                 success=True
             )
-    );
-    response.headers.set('Irbox-Success', 'true');
-    return response;
+    )
+    response.headers.set('Irbox-Success', 'true')
+    return response
 
 @rx_blueprint.route('/rx/failure')
 def rx_failure():
@@ -55,9 +58,9 @@ def rx_failure():
                 "rx-failure.html",
                 success=False
             )
-    );
-    response.headers.set('Irbox-Success', 'false');
-    return response;
+    )
+    response.headers.set('Irbox-Success', 'false')
+    return response
 
 @rx_blueprint.route('/rx/viewer')
 def rx_viewer():
@@ -65,7 +68,7 @@ def rx_viewer():
     rx outer page.
     """
 
-    return render_template("rx.html");
+    return render_template("rx.html")
 
 @rx_blueprint.route('/rx/messages')
 def rx_messages():
@@ -73,7 +76,7 @@ def rx_messages():
     rx inner page.
     """
 
-    return render_template("rx-messages.html");
+    return render_template("rx-messages.html")
 
 @rx_blueprint.route('/rx/message')
 def rx_message():
@@ -82,26 +85,26 @@ def rx_message():
     """
 
     # Request a message
-    irbox.getRxMessage()
+    irbox.get_rx_message()
 
     # Build plain-text response
     irbox_response = irbox.response
 
     # Ignore response timeouts
-    if (irbox.response == 'Response timeout'):
+    if irbox.response == 'Response timeout':
         irbox_response = ''
 
     # Ignore rx (these can slip through due to timing race conditions)
-    if (irbox.response == '+rx'):
+    if irbox.response == '+rx':
         irbox_response = ''
 
     # Ignore norx (these can possibly slip through due to timing race
     # conditions)
-    if (irbox.response == '+norx'):
+    if irbox.response == '+norx':
         irbox_response = ''
 
     # Build response
     response = make_response(irbox_response, 200)
     response.mimetype = 'text/plain'
 
-    return response;
+    return response

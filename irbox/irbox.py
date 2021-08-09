@@ -7,14 +7,16 @@ import socket
 import threading
 import time
 
-from irbox.counter import count_generator
 from irbox.errors import IrboxError
 from irbox.errors import MalformedArgumentsError
 from irbox.message import Message
+from irbox.count_generator import count_generator
 
 logger = logging.getLogger('irbox')
 
 class IrBox:
+    # pylint: disable=too-many-instance-attributes
+
     """
     Class to facilitate communication with the IR box using its protocol.
 
@@ -51,12 +53,15 @@ class IrBox:
             IrboxError: An IR box error.
         """
 
+        # No socket to start
+        self._socket = None
+
         # No reader thread until we do a connect()
         self._reader_thread = None
 
         # Build generators
-        self._message_count_generator = count_generator();
-        self._message_count = next(self._message_count_generator);
+        self._message_count_generator = count_generator()
+        self._message_count = next(self._message_count_generator)
 
         # Initialize received messages list
         self._messages = list()
@@ -120,21 +125,21 @@ class IrBox:
 
         # Establish TCP socket and configure timeout
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self._socket.settimeout(self._TIMEOUT);
+        self._socket.settimeout(self._TIMEOUT)
 
         # Connect
         try:
             self._socket.connect((host, port))
         except TimeoutError as timeout_error:
-            raise IrboxError(timeout_error)
+            raise IrboxError(timeout_error) from timeout_error
         except socket.timeout as timeout_error:
-            raise IrboxError(TimeoutError)
+            raise IrboxError(TimeoutError) from timeout_error
         except PermissionError as permission_error:
             logger.warning('Permission error')
-            raise IrboxError(permission_error)
+            raise IrboxError(permission_error) from permission_error
         except ConnectionRefusedError as connection_refused_error:
             logger.warning('Connection refused')
-            raise IrboxError(connection_refused_error)
+            raise IrboxError(connection_refused_error) from connection_refused_error
 
         # Disable timeout for reading on a separate thread
         self._socket.settimeout(None)
@@ -172,7 +177,7 @@ class IrBox:
         except IrboxError as irbox_error:
             raise irbox_error
 
-    def tx(self, args):
+    def tx(self, args): # pylint: disable=invalid-name
         """
         Sends a tx command to the IR box. Returns a value indicating whether
         or not the IR box responded positively to the tx command.
@@ -195,15 +200,15 @@ class IrBox:
             return self._send_message(message)
         except IrboxError as irbox_error:
             raise irbox_error
-        except TypeError:
-            raise MalformedArgumentsError
+        except TypeError as type_error:
+            raise MalformedArgumentsError from type_error
 
-    def rx(self):
+    def rx(self): # pylint: disable=invalid-name
         """
         Sends an rx command to the IR box. This puts the IR box in rx mode, to
         be terminated with a norx command. In this mode, the IR box sends tx()
         commands that correspond to IR commands that it receives. To obtain
-        those, call getRxMessage() while in rx mode.
+        those, call get_rx_message() while in rx mode.
 
         Returns a value indicating whether or not the IR box responded
         positively to the rx command.
@@ -220,8 +225,8 @@ class IrBox:
             return self._send_message('rx')
         except IrboxError as irbox_error:
             raise irbox_error
-    
-    def getRxMessage(self):
+
+    def get_rx_message(self):
         """
         Strictly for use in rx mode. Returns a tx() command written by the IR
         box.
@@ -298,7 +303,7 @@ class IrBox:
                 # errno 57 means the socket is already closed, so we only care
                 # about other errors
                 if os_error.errno != 57:
-                    raise IrboxError(os_error)
+                    raise IrboxError(os_error) from os_error
 
             self._socket = None
 
@@ -341,10 +346,10 @@ class IrBox:
         try:
             self._write(message.encode('ascii'))
         except TimeoutError:
-            logger.debug(f'Message timeout')
+            logger.debug('Message timeout')
             self._response = 'Message timeout'
             return False
-        logger.debug(f'Message({message_count}): [{message}]')
+        logger.debug('Message(%d): [%s]', message_count, message)
 
         # Check for a response within _TIMEOUT
         start = time.perf_counter()
@@ -360,7 +365,7 @@ class IrBox:
 
             time.sleep(self._WAIT)
 
-        logger.debug(f'Response timeout')
+        logger.debug('Response timeout')
         self._response = 'Response timeout'
         return False
 
@@ -444,7 +449,7 @@ class IrBox:
                     if os_error.errno == 57:
                         byte = b''
                     else:
-                        raise IrboxError(os_error)
+                        raise IrboxError(os_error) from os_error
 
                 if byte == b'':
                     # Connection closed
@@ -456,7 +461,11 @@ class IrBox:
             # Fill in the first message
             if message != b'':
                 self._messages[-1].message = message.decode('ascii')[:-2]
-                logger.debug(f'Response({self._messages[-1].message_id}): [{self._messages[-1].message}]')
+                logger.debug(
+                        'Response(%d): [%s].message}]',
+                        self._messages[-1].message_id,
+                        self._messages[-1].message
+                )
 
     def _write(self, message):
         """
@@ -493,22 +502,22 @@ class IrBox:
             message += b'\r\n'
 
         # Send the message
-        while (total_sent < len(message)):
+        while total_sent < len(message):
             try:
                 sent = self._socket.send(message)
             except TimeoutError as timeout_error:
-                raise IrboxError(timeout_error)
-            except socket.timeout:
-                raise IrboxError(TimeoutError)
+                raise IrboxError(timeout_error) from timeout_error
+            except socket.timeout as socket_timeout:
+                raise IrboxError(TimeoutError) from socket_timeout
             except BrokenPipeError:
                 try:
                     self._reconnect()
                 except TimeoutError as timeout_error:
-                    raise IrboxError(timeout_error)
+                    raise IrboxError(timeout_error) from timeout_error
 
                 continue
 
-            if (sent == 0):
+            if sent == 0:
                 return 0
 
             total_sent += sent

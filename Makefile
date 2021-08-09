@@ -1,5 +1,5 @@
 # Path to pylint
-PYLINT ?= pylint
+PYLINT ?= pylint --rcfile=.pylintrc
 
 # Path to pydoc
 PYDOC ?= pydoc

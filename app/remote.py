@@ -1,7 +1,9 @@
+"""
+Remote endpoints.
+"""
+
 import os
 import urllib.parse
-
-from app import irbox
 
 from flask import Blueprint
 from flask import current_app

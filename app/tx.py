@@ -1,8 +1,6 @@
-from app import irbox
-
-from irbox.errors import IrboxError
-from irbox.errors import MalformedArgumentsError
-from irbox.protocol import Protocol
+"""
+tx command endpoints.
+"""
 
 from flask import Blueprint
 from flask import make_response
@@ -11,10 +9,15 @@ from flask import render_template
 from flask import request
 from flask import url_for
 
+from irbox.errors import IrboxError
+from irbox.protocol import Protocol
+
+from app import irbox
+
 tx_blueprint = Blueprint('tx_blueprint', __name__)
 
 @tx_blueprint.route('/tx')
-def tx():
+def tx(): # pylint: disable=invalid-name
     """
     Transmit command.
     """
@@ -46,16 +49,13 @@ def tx():
         protocol_decimal = Protocol.UNKNOWN.value
 
     # Build subsequent arguments
-    if (
-            protocol_decimal == Protocol.NEC.value
-            or protocol_decimal == Protocol.APPLE.value
-    ):
+    if protocol_decimal in (Protocol.NEC.value, Protocol.APPLE.value):
         # NEC/Apple next argument is repeats (optional)
         if repeats is not None:
             args.append(repeats)
     elif protocol_decimal == Protocol.SONY.value:
         # Sony next argument is bits
-        args.append(bits);
+        args.append(bits)
 
         # Then repeats (optional)
         if repeats is not None:
@@ -127,9 +127,9 @@ def tx_success():
                     repeats=repeats,
                     bits=bits
             )
-    );
-    response.headers.set('Irbox-Success', 'true');
-    return response;
+    )
+    response.headers.set('Irbox-Success', 'true')
+    return response
 
 @tx_blueprint.route('/tx/failure')
 def tx_failure():
@@ -155,6 +155,6 @@ def tx_failure():
                     repeats=repeats,
                     bits=bits
             )
-    );
-    response.headers.set('Irbox-Success', 'false');
-    return response;
+    )
+    response.headers.set('Irbox-Success', 'false')
+    return response

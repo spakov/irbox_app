@@ -3,7 +3,9 @@ Default IR box configuration. Override this with a .cfg file and the
 IRBOX_CONFIG environment variable!
 """
 
-class DefaultConfig(object):
+class DefaultConfig():
+    #pylint: disable=too-few-public-methods
+
     """
     Configuration class.
 

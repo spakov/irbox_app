@@ -27,12 +27,15 @@ class IrboxError(Exception):
             self.message = None
 
         # Update message if possible
-        if type(self.base) is TimeoutError:
+        if isinstance(self.base) is TimeoutError:
             self.message = 'Timeout'
-        elif type(self.base) is PermissionError:
+        elif isinstance(self.base) is PermissionError:
             self.message = 'Permission denied'
-        elif type(self.base) is ConnectionRefusedError:
+        elif isinstance(self.base) is ConnectionRefusedError:
             self.message = 'Connection refused'
+
+        # Initialize ancestor
+        super().__init__(self.message)
 
 class MalformedArgumentsError(IrboxError):
     """
@@ -45,3 +48,6 @@ class MalformedArgumentsError(IrboxError):
         """
 
         self.message = 'Malformed arguments'
+
+        # Initialize ancestor
+        super().__init__(self.message)

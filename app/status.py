@@ -1,8 +1,9 @@
-from app import irbox
+"""
+Status page endpoint.
+"""
 
 from flask import Blueprint
 from flask import render_template
-from flask import request
 
 status_blueprint = Blueprint('status_blueprint', __name__)
 
@@ -12,4 +13,4 @@ def status():
     Filler page for status iframe.
     """
 
-    return render_template("status.html");
+    return render_template("status.html")

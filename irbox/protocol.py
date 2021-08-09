@@ -1,3 +1,7 @@
+"""
+Protocol enum.
+"""
+
 from enum import Enum, unique
 
 @unique
