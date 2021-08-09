@@ -1,11 +1,11 @@
 # Path to pylint
 PYLINT ?= pylint --rcfile=.pylintrc
 
-# Path to pydoc
-PYDOC ?= pydoc
-
-# Directories to ignore for linting
+# Directories to ignore
 IGNORE_DIRS := .git static templates venv
+
+# Documentation output directory
+DOC_OUTPUT := doc
 
 .DEFAULT_GOAL := all
 .PHONY: all
@@ -18,9 +18,9 @@ lint:
 
 .PHONY: doc
 doc:
-	$(PYDOC) -w ./
+	pdoc3 -o $(DOC_OUTPUT) --html .
 
 .PHONY: clean
 clean:
 	@# Remove all .pyc and .html files
-	rm $$(find . \( $(shell for i in $(IGNORE_DIRS); do echo "-path ./$$i -o "; done) -false \) -prune -o \( -name '*.pyc' -print \) -o \( -name '*.html' -print \))
+	rm -rv $$(find . \( $(shell for i in $(IGNORE_DIRS); do echo "-path ./$$i -o "; done) -false \) -prune -o \( -name '*.pyc' -print \) -o \( -name '*.html' -print \)) $(DOC_OUTPUT)

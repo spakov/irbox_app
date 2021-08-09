@@ -4,7 +4,7 @@ Contains class to facilitate message processing.
 
 class Message:
     """
-    Class to facilitate message pressing.
+    Class to facilitate message processing.
 
     Attributes:
         _message_id (int): Message ID.
