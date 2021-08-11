@@ -1,5 +1,5 @@
 """
-norx command endpoints.
+```norx``` command endpoints.
 """
 
 from flask import Blueprint
@@ -18,7 +18,7 @@ norx_blueprint = Blueprint('norx_blueprint', __name__)
 @norx_blueprint.route('/norx')
 def norx():
     """
-    norx command.
+    ```norx``` command.
     """
 
     try:
@@ -36,7 +36,7 @@ def norx():
 @norx_blueprint.route('/norx/success')
 def norx_success():
     """
-    Successful norx.
+    Successful ```norx```.
     """
 
     message = request.args.get('m')
@@ -54,7 +54,7 @@ def norx_success():
 @norx_blueprint.route('/norx/failure')
 def norx_failure():
     """
-    Failed norx.
+    Failed ```norx```.
     """
 
     message = request.args.get('m')

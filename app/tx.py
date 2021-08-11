@@ -1,5 +1,5 @@
 """
-tx command endpoints.
+```tx``` command endpoints.
 """
 
 from flask import Blueprint
@@ -19,7 +19,7 @@ tx_blueprint = Blueprint('tx_blueprint', __name__)
 @tx_blueprint.route('/tx')
 def tx(): # pylint: disable=invalid-name
     """
-    Transmit command.
+    ```tx``` command.
     """
 
     protocol = request.args.get('p')
@@ -106,7 +106,7 @@ def tx(): # pylint: disable=invalid-name
 @tx_blueprint.route('/tx/success')
 def tx_success():
     """
-    Successful command transmission.
+    Successful ```tx```.
     """
 
     message = request.args.get('m')
@@ -134,7 +134,7 @@ def tx_success():
 @tx_blueprint.route('/tx/failure')
 def tx_failure():
     """
-    Failed command transmission.
+    Failed ```tx```.
     """
 
     message = request.args.get('m')

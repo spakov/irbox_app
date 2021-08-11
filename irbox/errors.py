@@ -13,10 +13,6 @@ class IrboxError(Exception):
     """
 
     def __init__(self, base = None):
-        """
-        Constructor.
-        """
-
         # Note base exception
         self.base = base
 
@@ -43,10 +39,6 @@ class MalformedArgumentsError(IrboxError):
     """
 
     def __init__(self):
-        """
-        Constructor.
-        """
-
         self.message = 'Malformed arguments'
 
         # Initialize ancestor

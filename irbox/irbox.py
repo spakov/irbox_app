@@ -20,16 +20,14 @@ class IrBox:
     """
     Class to facilitate communication with the IR box using its protocol.
 
-    Constants:
-        _WAIT: Number of seconds to wait each loop when reading data.
-        _TIMEOUT: Timeout (in seconds) for connection and to wait for messages
-            to be received. Recommend a value no less than 5 to account for
-            transmissions with many repeats (e.g., simulating holding a
-            button).
-
     Attributes:
+        _WAIT (int): Number of seconds to wait each loop when reading data.
+        _TIMEOUT (int): Timeout (in seconds) for connection and to wait for
+            messages to be received. Recommend a value no less than 5 to
+            account for transmissions with many repeats (e.g., simulating
+            holding a button).
         _socket (socket): TCP socket.
-        _reader_thread (Thread): Thread that calls _read().
+        _reader_thread (Thread): Thread that calls `_read()`.
         _message_count_generator (generator of int): Transmitted message count
             generator.
         _message_count (int): Transmitted message count.
@@ -43,7 +41,7 @@ class IrBox:
 
     def __init__(self, host=None, port=None):
         """
-        Constructor. If host and port are specified, connect.
+        Constructor connects if host and port are specified.
 
         Args:
             host (str): The host to connect to.
@@ -80,7 +78,7 @@ class IrBox:
 
     def __del__(self):
         """
-        Destructor. Makes a best-effort attempt to terminate any connection.
+        Destructor makes a best-effort attempt to terminate any connection.
         """
 
         try:
@@ -161,12 +159,13 @@ class IrBox:
 
     def nop(self):
         """
-        Sends a nop command to the IR box. Returns a value indicating whether
-        or not the IR box responded positively to the nop command.
+        Sends a ```nop``` command to the IR box. Returns a value indicating
+        whether or not the IR box responded positively to the ```nop```
+        command.
 
         Returns:
             bool: A value indicating whether or not the IR box responded
-                positively to the nop command.
+                positively to the ```nop``` command.
 
         Raises:
             IrboxError: An IR box error.
@@ -179,15 +178,15 @@ class IrBox:
 
     def tx(self, args): # pylint: disable=invalid-name
         """
-        Sends a tx command to the IR box. Returns a value indicating whether
-        or not the IR box responded positively to the tx command.
+        Sends a ```tx``` command to the IR box. Returns a value indicating
+        whether or not the IR box responded positively to the ```tx``` command.
 
         Args:
-            args (list of str): tx() arguments to join with commas.
+            args (list of str): ```tx()``` arguments to join with commas.
 
         Returns:
             bool: A value indicating whether or not the IR box responded
-                positively to the tx command.
+                positively to the ```tx``` command.
 
         Raises:
             IrboxError: An IR box error.
@@ -205,17 +204,18 @@ class IrBox:
 
     def rx(self): # pylint: disable=invalid-name
         """
-        Sends an rx command to the IR box. This puts the IR box in rx mode, to
-        be terminated with a norx command. In this mode, the IR box sends tx()
-        commands that correspond to IR commands that it receives. To obtain
-        those, call get_rx_message() while in rx mode.
+        Sends an ```rx``` command to the IR box. This puts the IR box in
+        receive mode, to be terminated with a ```norx``` command. In this mode,
+        the IR box sends ```tx()``` commands that correspond to IR commands
+        that it receives. To obtain those, call `get_rx_message()` while in
+        receive mode.
 
         Returns a value indicating whether or not the IR box responded
-        positively to the rx command.
+        positively to the ```rx``` command.
 
         Returns:
             bool: A value indicating whether or not the IR box responded
-                positively to the tx command.
+                positively to the ```tx``` command.
 
         Raises:
             IrboxError: An IR box error.
@@ -228,15 +228,15 @@ class IrBox:
 
     def get_rx_message(self):
         """
-        Strictly for use in rx mode. Returns a tx() command written by the IR
-        box.
+        Strictly for use in receive mode. Returns a ```tx()``` command written
+        by the IR box.
 
-        Returns the tx() command read from the IR box, or None if it has not
-            written one yet.
+        Returns the ```tx()``` command read from the IR box, or `None` if it
+        has not written one yet.
 
         Returns:
-            str?: The tx() command read from the IR box, or None if it has not
-                written one yet.
+            str: The ```tx()``` command read from the IR box, or `None` if it
+                has not written one yet.
 
         Raises:
             IrboxError: An IR box error.
@@ -249,14 +249,14 @@ class IrBox:
 
     def norx(self):
         """
-        Sends an norx command to the IR box. This exits rx mode.
+        Sends a ```norx``` command to the IR box. This exits receive mode.
 
         Returns a value indicating whether or not the IR box responded
-        positively to the norx command.
+        positively to the ```norx``` command.
 
         Returns:
             bool: A value indicating whether or not the IR box responded
-                positively to the norx command.
+                positively to the ```norx``` command.
 
         Raises:
             IrboxError: An IR box error.
@@ -269,13 +269,16 @@ class IrBox:
 
     def invalid(self):
         """
-        Sends an invalid command to the IR box (for debugging purposes).
-        Returns a value indicating whether or not the IR box responded
-        positively to the invalid command.
+        Sends an ```invalid``` command (which is, indeed, an invalid command)
+        to the IR box (for debugging purposes). Returns a value indicating
+        whether or not the IR box responded positively to the ```invalid```
+        command.
+
+        Should always return `False`.
 
         Returns:
             bool: A value indicating whether or not the IR box responded
-                positively to the invalid command.
+                positively to the ```invalid``` command.
 
         Raises:
             IrboxError: An IR box error.
@@ -326,12 +329,12 @@ class IrBox:
             message (str): The message to send. Must contain only ASCII
                 characters.
             validate (bool): Whether or not to validate by waiting for a
-                positive response (i.e., one that begins with +).
+                positive response (i.e., one that begins with `+`).
 
         Returns:
             bool:
                 A value indicating whether or not a positive response was
-                received (if validate) within _TIMEOUT
+                received (if validate) within `_TIMEOUT`
 
         Raises:
             IrboxError: An IR box error.
@@ -374,14 +377,14 @@ class IrBox:
         Returns the response corresponding to the message identified by the
         specified message count.
 
-        This is invoked automatically by _send_message() and should not need to
-        be called separately.
+        This is invoked automatically by `_send_message()` and should not need
+        to be called separately.
 
         Args:
             message_id (int): The ID of the message to obtain a response to.
 
         Returns:
-            str: The message that was received, or None if no message is
+            str: The message that was received, or `None` if no message is
                 available.
         """
 
@@ -401,7 +404,7 @@ class IrBox:
     def _reconnect(self):
         """
         Reconnects to the IR box using the host and port previously passed to
-        connect().
+        `connect()`.
 
         This is a low-level method and not meant to be called directly.
 
@@ -419,8 +422,8 @@ class IrBox:
     def _read(self):
         """
         Reads messages from the IR box, one byte at a time. Messages match
-        /.*\r\n/. Expects the _messages list to contain one Message object per
-        message received. Fills in the message text in the order messages
+        `/.*\r\n/`. Expects the _messages list to contain one Message object
+        per message received. Fills in the message text in the order messages
         appear in the list. Blocks until a full message is received. Meant to
         run forever in its own thread.
 

@@ -7,7 +7,7 @@ COUNT_MAX = 65535
 
 def count_generator():
     """
-    Generates a count used for message count.
+    Message count generator.
     """
     while True:
         for i in range(COUNT_MAX):

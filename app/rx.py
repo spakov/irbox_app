@@ -1,5 +1,5 @@
 """
-rx command endpoints.
+```rx``` command endpoints.
 """
 
 from flask import Blueprint
@@ -17,7 +17,7 @@ rx_blueprint = Blueprint('rx_blueprint', __name__)
 @rx_blueprint.route('/rx')
 def rx(): # pylint: disable=invalid-name
     """
-    rx command.
+    ```rx``` command.
     """
 
     try:
@@ -35,7 +35,7 @@ def rx(): # pylint: disable=invalid-name
 @rx_blueprint.route('/rx/success')
 def rx_success():
     """
-    Successful rx.
+    Successful ```rx```.
     """
 
     response = make_response(
@@ -50,7 +50,7 @@ def rx_success():
 @rx_blueprint.route('/rx/failure')
 def rx_failure():
     """
-    Failed rx.
+    Failed ```rx```.
     """
 
     response = make_response(
@@ -65,7 +65,7 @@ def rx_failure():
 @rx_blueprint.route('/rx/viewer')
 def rx_viewer():
     """
-    rx outer page.
+    Outer page endpoint.
     """
 
     return render_template("rx.html")
@@ -73,7 +73,7 @@ def rx_viewer():
 @rx_blueprint.route('/rx/messages')
 def rx_messages():
     """
-    rx inner page.
+    Inner page endpoint.
     """
 
     return render_template("rx-messages.html")
@@ -81,7 +81,7 @@ def rx_messages():
 @rx_blueprint.route('/rx/message')
 def rx_message():
     """
-    Raw message text returns from the IR box.
+    Raw message text returned from the IR box.
     """
 
     # Request a message

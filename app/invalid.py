@@ -1,5 +1,5 @@
 """
-invalid command endpoints.
+```invalid``` command endpoints.
 """
 
 from flask import Blueprint
@@ -18,7 +18,7 @@ invalid_blueprint = Blueprint('invalid_blueprint', __name__)
 @invalid_blueprint.route('/invalid')
 def invalid():
     """
-    Invalid command (for debugging purposes).
+    ```invalid``` command (for debugging purposes).
     """
 
     try:
@@ -39,7 +39,7 @@ def invalid():
 @invalid_blueprint.route('/invalid/success')
 def invalid_success():
     """
-    Successful invalid command. (This should be unreachable.)
+    Successful ```invalid``` command. (This should be unreachable.)
     """
 
     message = request.args.get('m')
@@ -57,7 +57,7 @@ def invalid_success():
 @invalid_blueprint.route('/invalid/failure')
 def invalid_failure():
     """
-    Failed invalid command.
+    Failed ```invalid``` command.
     """
 
     message = request.args.get('m')

@@ -7,7 +7,7 @@ from enum import Enum, unique
 @unique
 class Protocol(Enum):
     """
-    Arduino-IRremote protocols. Adapted from src/IRProtocol.h commit
+    Arduino-IRremote protocols. Adapted from `src/IRProtocol.h` commit
     39eec4c5caa4e7f2ba94003d2fe0e83d9c2b29a5.
     """
 

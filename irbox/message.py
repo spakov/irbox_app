@@ -13,8 +13,6 @@ class Message:
 
     def __init__(self, message_id):
         """
-        Constructor.
-
         Args:
             message_id (int): Message ID.
         """

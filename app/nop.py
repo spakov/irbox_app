@@ -1,5 +1,5 @@
 """
-nop command endpoints.
+```nop``` command endpoints.
 """
 
 from flask import Blueprint
@@ -18,7 +18,7 @@ nop_blueprint = Blueprint('nop_blueprint', __name__)
 @nop_blueprint.route('/nop')
 def nop():
     """
-    nop command.
+    ```nop``` command.
     """
 
     try:
@@ -36,7 +36,7 @@ def nop():
 @nop_blueprint.route('/nop/success')
 def nop_success():
     """
-    Successful nop.
+    Successful ```nop```.
     """
 
     message = request.args.get('m')
@@ -54,7 +54,7 @@ def nop_success():
 @nop_blueprint.route('/nop/failure')
 def nop_failure():
     """
-    Failed nop.
+    Failed ```nop```.
     """
 
     message = request.args.get('m')
