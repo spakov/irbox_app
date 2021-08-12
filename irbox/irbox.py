@@ -34,6 +34,10 @@ class IrBox:
         _messages (list of Message): Received messages, in the order they were
             received.
         _response (str): Last response received from the IR box.
+        _retry (bool): Whether or not to assume the connection has been
+            destroyed after a failed transmission. Use this responsibly! (That
+            means keep `_TIMEOUT` high relative to the duration of the longest
+            ```tx``` command you wish to support.)
     """
 
     _WAIT = 0.01
@@ -67,6 +71,9 @@ class IrBox:
         # No response by default
         self._response = None
 
+        # Do not retry by default
+        self._retry = False
+
         # If host and port were specified, start the connection
         if host and port:
             self.host = host
@@ -86,6 +93,27 @@ class IrBox:
         except AttributeError:
             # Object was probably already destroyed
             pass
+
+    @property
+    def retry(self):
+        """
+        Whether or not to attempt to reconnect on response timeout.
+
+        Returns:
+            bool: Whether or not to attempt to reconnect on response timeout.
+        """
+
+    @retry.setter
+    def retry(self, retry):
+        """
+        Whether or not to attempt to reconnect on response timeout.
+
+        Args:
+            retry (bool): Whether or not to attempt to reconnect on response
+                timeout.
+        """
+
+        self._retry = retry
 
     @property
     def response(self):
@@ -243,7 +271,7 @@ class IrBox:
         """
 
         try:
-            return self._send_message('')
+            return self._send_message('', False)
         except IrboxError as irbox_error:
             raise irbox_error
 
@@ -303,15 +331,19 @@ class IrBox:
                 self._socket.shutdown(socket.SHUT_RDWR)
                 self._socket.close()
             except OSError as os_error:
-                # errno 57 means the socket is already closed, so we only care
-                # about other errors
-                if os_error.errno != 57:
+                # errno 57 means the socket is already closed
+                if os_error.errno == 57:
+                    pass
+                # errno 9 is bad file descriptor
+                elif os_error.errno == 9:
+                    pass
+                else:
                     raise IrboxError(os_error) from os_error
 
             self._socket = None
 
-            # Take the opportunity to clear the messages list and free a bit of
-            # memory
+            # Take the opportunity to clear the messages list and potentially
+            # free a bit of memory
             if self._messages is not None:
                 self._messages.clear()
 
@@ -320,7 +352,7 @@ class IrBox:
                 logger.info('Connection closed')
 
     # TODO: raise exceptions instead of using strings
-    def _send_message(self, message):
+    def _send_message(self, message, retry=True):
         """
         Sends a message to the IR box. Use this method to communicate with the
         IR box.
@@ -369,6 +401,13 @@ class IrBox:
             time.sleep(self._WAIT)
 
         logger.debug('Response timeout')
+
+        # If retry is enabled, reconnect and try again
+        if retry and self._retry:
+            # Reconnect and try once more
+            self._reconnect()
+            return self._send_message(message, False)
+
         self._response = 'Response timeout'
         return False
 
@@ -447,9 +486,15 @@ class IrBox:
                 except TimeoutError:
                     # Socket timed out, so close the connection
                     self._close()
+                except ConnectionResetError:
+                    # Connection reset by peer
+                    self._close()
                 except OSError as os_error:
                     # errno 57 means the socket is already closed
                     if os_error.errno == 57:
+                        byte = b''
+                    # errno 9 is bad file descriptor
+                    elif os_error.errno == 9:
                         byte = b''
                     else:
                         raise IrboxError(os_error) from os_error
@@ -463,12 +508,16 @@ class IrBox:
 
             # Fill in the first message
             if message != b'':
-                self._messages[-1].message = message.decode('ascii')[:-2]
-                logger.debug(
-                        'Response(%d): [%s].message}]',
-                        self._messages[-1].message_id,
-                        self._messages[-1].message
-                )
+                try:
+                    self._messages[-1].message = message.decode('ascii')[:-2]
+                    logger.debug(
+                            'Response(%d): [%s]',
+                            self._messages[-1].message_id,
+                            self._messages[-1].message
+                    )
+                except IndexError:
+                    # Something got out of sync, so start over
+                    self._reconnect()
 
     def _write(self, message):
         """

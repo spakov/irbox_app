@@ -23,11 +23,11 @@ class IrboxError(Exception):
             self.message = None
 
         # Update message if possible
-        if isinstance(self.base) is TimeoutError:
+        if isinstance(self.base, TimeoutError):
             self.message = 'Timeout'
-        elif isinstance(self.base) is PermissionError:
+        elif isinstance(self.base, PermissionError):
             self.message = 'Permission denied'
-        elif isinstance(self.base) is ConnectionRefusedError:
+        elif isinstance(self.base, ConnectionRefusedError):
             self.message = 'Connection refused'
 
         # Initialize ancestor

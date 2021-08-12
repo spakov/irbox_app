@@ -1,8 +1,8 @@
 {% extends 'remote-base.html' %}
 {% block remote_content %}
-    <div id="remote" class="alt-align" style="--legend-font-size: 9pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-width: 3.5rem; --button-height: 1.5rem; --button-gap: 1rem; --button-radius: 0.5ex; --button-font-size: 9pt; max-width: calc(var(--button-width) * 3 + var(--button-gap) * 4);">
+    <div id="remote"{% if alt_align %} class="alt-align"{% endif %} style="--legend-font-size: 9pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-width: 3.5rem; --button-height: 1.5rem; --button-gap: 1rem; --button-radius: 0.5ex; --button-font-size: 9pt; max-width: calc(var(--button-width) * 3 + var(--button-gap) * 4);">
       <div style="height: 2em;">
-        <div id="status" class="alt-align" style="margin-bottom: 0;" onclick="toggleResponse();"></div>
+        <div id="status"{% if alt_align %} class="alt-align"{% endif %} style="margin-bottom: 0;" onclick="toggleResponse();"></div>
       </div>
       <div class="grid-cluster" style="margin-top: 0; --button-width: calc(3.5rem * 3/4); --button-height: 1rem; --button-gap: 0.75rem; color: #ff9; font-size: 8pt; text-align: center;">
         <span style="margin-top: auto; margin-bottom: calc(-1 * var(--button-gap));"><br>MUTING</span>
@@ -14,23 +14,23 @@
         <button type="button" style="margin-top: calc((var(--button-width) - var(--button-height)) / 2); --button-bg: #090;" onclick="tx(TVPWR);"></button>
         <button type="button" style="--button-bg: #090; --button-height: var(--button-width); border-radius: var(--button-width);" onclick="tx(POWER);"></button>
       </div>
-      <div class="grid-cluster alt-align" style="margin-bottom: 0; --button-fg: #ff9;">
+      <div class="grid-cluster{% if alt_align %} alt-align"{% endif %} style="margin-bottom: 0; --button-fg: #ff9;">
         <button type="button" onclick="tx(TVVLU);">+</button>
         <button type="button" onclick="tx(TVCHU);">+</button>
         <button type="button" style="--button-fg: white;" onclick="tx(INPTN);">+</button>
       </div>
-      <div class="grid-cluster alt-align" style="margin-top: 0; margin-bottom: 0.5ex; --button-height: 1em; color: #ff9; font-size: 8pt; text-align: center;">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="margin-top: 0; margin-bottom: 0.5ex; --button-height: 1em; color: #ff9; font-size: 8pt; text-align: center;">
         <span>TV VOL</span>
         <span>TV CH</span>
         <span style="color: white;">INPUT</span>
       </div>
-      <div class="grid-cluster alt-align" style="margin-top: 0; --button-fg: #ff9;">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="margin-top: 0; --button-fg: #ff9;">
         <button type="button" onclick="tx(TVVLD);">−</button>
         <button type="button" onclick="tx(TVCHD);">−</button>
         <button type="button" style="--button-fg: white;" onclick="tx(INPTP);">−</button>
       </div>
       <div style="margin: calc(var(--button-gap) / 2); padding: 0; border: 1px white solid; border-radius: 0.5ex; height: calc(var(--button-height) * 2 + var(--button-gap) * 2);">
-        <div class="grid-cluster alt-align" style="grid-template-columns: auto auto auto; margin: calc(var(--button-gap) / 2);">
+        <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="grid-template-columns: auto auto auto; margin: calc(var(--button-gap) / 2);">
           <button type="button" ="condensed" onclick="tx(STD);">STD</button>
           <button type="button" onclick="tx(MOVIE);">MOVIE</button>
           <button type="button" onclick="tx(GAME);">GAME</button>
@@ -59,7 +59,7 @@
           <button type="button" onclick="tx(VOLDN);">−</button>
         </div>
       </div>
-      <div class="directional-cluster alt-align no-alt" style="--button-width: 2.5rem; --button-height: 2.5rem; margin: 0 calc(var(--button-gap) * 5.125);">
+      <div class="directional-cluster{% if alt_align %} alt-align{% endif %} no-alt" style="--button-width: 2.5rem; --button-height: 2.5rem; margin: 0 calc(var(--button-gap) * 5.125);">
         <div class="directional-up">
           <button type="button" onclick="tx(UP);">▲</button>
         </div>
@@ -88,7 +88,7 @@
       <div style="text-align: center; margin: 0 var(--button-gap); border-bottom: 1px white solid; line-height: 0.1em; font-size: 10pt;">
         <span style="background-color: #333; padding: 0 1ex;">BLUETOOTH</span>
       </div>
-      <div class="grid-cluster alt-align" style="margin-top: calc(var(--button-gap) / 2); margin-bottom: 0;">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="margin-top: calc(var(--button-gap) / 2); margin-bottom: 0;">
         <button type="button" onclick="tx(BACK);">❙◀︎◀︎</button>
         <button type="button" onclick="tx(PAUSE);">❙❙</button>
         <button type="button" onclick="tx(FWD);">▶︎▶︎❙</button>
@@ -96,12 +96,12 @@
         <button type="button" onclick="tx(PLAY);">▶︎</button>
         <button type="button" onclick="tx(FFW);">▶︎▶︎</button>
       </div>
-      <div class="grid-cluster alt-align" style="margin-top: calc(var(--button-gap) - var(--button-height)); margin-bottom: 0.5ex; --button-height: 8pt; font-size: var(--button-height); text-align: center;">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="margin-top: calc(var(--button-gap) - var(--button-height)); margin-bottom: 0.5ex; --button-height: 8pt; font-size: var(--button-height); text-align: center;">
         <span>PAIRING</span>
         <div></div>
         <div></div>
       </div>
-      <div class="grid-cluster alt-align" style="margin-top: 0;">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="margin-top: 0;">
         <button type="button" style="margin: 0 calc((var(--button-width) - var(--button-height)) / 2); width: var(--button-height); --button-radius: 1rem;" onclick="tx(PAIRG);"></button>
         <button type="button" onclick="tx(STOP);">◼︎</button>
         <div></div>

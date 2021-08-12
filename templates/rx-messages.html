@@ -5,20 +5,22 @@
     <script>
       /* After page is loaded */
       function afterLoad() {
+        /* TODO: this is less than ideal. Figure out a better way to auto
+           scroll. */
         /* Auto scroll to bottom, but only if the user is scrolled to the
            bottom of the page. This does not appear to work on mobile. */
         setInterval(function() {
           if (
             (window.innerHeight + window.pageYOffset)
-            >= document.body.offsetHeight
+            >= document.body.offsetHeight - 50
           ) {
             window.scrollTo (0, document.body.scrollHeight);
           }
-        }, 10);
+        }, 100);
       }
     </script>
     <h1>Received Messages</h1>
-    <p>After starting, infrared commands will be displayed below as they are received. Messages will be received four times per second.</p>
+    <p>After starting, infrared commands will be received by the IR box four times per second. As they are received, they will be printed below, formatted as JavaScript objects that can be used by remotes with the <code>tx()</code> function. Mouse over them to see the raw message that was received.</p>
     <ul id="messages">
     </ul>
 {% endblock %}

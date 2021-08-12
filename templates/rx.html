@@ -12,17 +12,17 @@
           }
       });
     </script>
-    <a id="back" href="{{ url_for('index_blueprint.index') }}" class="alt-align" title="Back to remotes list">🔙</a>
-    <a id="alt-toggle" class="alt-align" onclick="toggleAlt();" title="Toggle alignment">↹</a>
-    <div style="--response-width: min(20rem, calc(100vw - (4rem * 2 + 0.5rem * 9))); --response-height: calc(100vh - 6.5rem);">
-      <iframe id="response" class="alt-align" style="display: block;" src="{{ url_for('rx_blueprint.rx_messages') }}"></iframe>
+    <a id="back" href="{{ url_for('index_blueprint.index') }}"{% if alt_align %} class="alt-align"{% endif %} title="Back to remotes list">🔙</a>
+    <a id="alt-toggle"{% if alt_align %} class="alt-align"{% endif %} onclick="toggleAlt();" title="Toggle alignment">↹</a>
+    <div style="--response-width: min(50vw, calc(100vw - (4rem * 2 + 0.5rem * 9))); --response-height: calc(100vh - 6.5rem);">
+      <iframe id="response"{% if alt_align %} class="alt-align"{% endif %} style="display: block;" src="{{ url_for('rx_blueprint.rx_messages') }}"></iframe>
     </div>
-    <div id="remote" class="alt-align" style="--button-width: 4rem; --button-gap: 0.5rem; max-width: calc(var(--button-width) * 2 + var(--button-gap) * 6);">
-      <div id="status" class="alt-align" style="cursor: default;"></div>
+    <div id="remote"{% if alt_align %} class="alt-align"{% endif %} style="--button-width: 4rem; --button-gap: 0.5rem; max-width: calc(var(--button-width) * 2 + var(--button-gap) * 6);">
+      <div id="status"{% if alt_align %} class="alt-align"{% endif %} style="cursor: default;"></div>
       <div style="height: 2rem;"></div>
       <fieldset style="margin: 0 0.5rem 0.5rem 0.5rem;">
         <legend>Receive Mode</legend>
-        <div class="grid-cluster alt-align">
+        <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
           <button id="start" type="button" style="--button-bg: #090;" onclick="rx();">Start</button>
           <button id="stop" type="button" style="--button-bg: #900;" disabled onclick="norx();">Stop</button>
         </div>

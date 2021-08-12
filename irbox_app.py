@@ -3,6 +3,7 @@ Flask app.
 """
 
 import logging
+import os
 
 from flask import Flask
 
@@ -19,6 +20,11 @@ from app.rx import rx_blueprint
 from app.status import status_blueprint
 from app.tx import tx_blueprint
 
+_ENV = 'IRBOX_CONFIG'
+"""
+Name of config file environment variable.
+"""
+
 logger = logging.getLogger(__name__)
 
 # Initialize application
@@ -29,7 +35,7 @@ app.config.from_object('app.config.DefaultConfig')
 
 # Load runtime configuration
 try:
-    app.config.from_envvar('IRBOX_CONFIG')
+    app.config.from_envvar(_ENV)
 except RuntimeError:
     logger.warning(
             '[1;31mWARNING[0m: The IRBOX_CONFIG environment variable is '
@@ -55,7 +61,8 @@ app.register_blueprint(tx_blueprint)
 @app.before_first_request
 def init():
     """
-    Start connection to the IR box immediately before the first request.
+    Establish soft connection to the IR box immediately before the first
+    request.
     """
 
     # We don't care about errors right now since we're only doing a soft
@@ -66,7 +73,27 @@ def init():
     except IrboxError:
         pass
 
+    # If we should use retry, configure that
+    if app.config['RETRY']:
+        irbox.retry = True
+
 # Kick off Flask in debug mode
 if __name__ == '__main__':
+    # By default, no extra files
+    extra_files = []
+
+    # Set up debug logging
     logging.basicConfig(level=logging.DEBUG)
-    app.run(host='0.0.0.0', port='5000', extra_files=['irbox.cfg'], debug=True)
+
+    # If config file exists, have Werkzeug monitor for changes
+    if _ENV in os.environ:
+        if os.path.isfile(os.environ[_ENV]):
+            extra_files.append(os.environ[_ENV])
+
+    # Start the app
+    app.run(
+            host='0.0.0.0',
+            port='5000',
+            extra_files=extra_files,
+            debug=True
+    )

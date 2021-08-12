@@ -1,6 +1,6 @@
 {% extends 'remote-base.html' %}
 {% block remote_content %}
-    <div id="remote" class="alt-align" style="--legend-font-size: 9pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-bg: #666; --button-fg: white; --button-width: 2em; --button-height: 2em; --button-gap: 0.4em; --button-radius: 0.5ex; --button-font-size: 11pt; max-width: calc(var(--button-width) * 5 + var(--button-gap) * 6); border-radius: 0.5em 0.5em 1em 1em;">
+    <div id="remote"{% if alt_align %} class="alt-align"{% endif %} style="--legend-font-size: 9pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-bg: #666; --button-fg: white; --button-width: 2em; --button-height: 2em; --button-gap: 0.4em; --button-radius: 0.5ex; --button-font-size: 11pt; max-width: calc(var(--button-width) * 5 + var(--button-gap) * 6); border-radius: 0.5em 0.5em 1em 1em;">
       <div id="status" onclick="toggleResponse();"></div>
       <div style="height: 1em;"></div>
       <legend class="no-alt">Power</legend>
@@ -11,28 +11,28 @@
         <div></div>
         <div></div>
       </div>
-      <div class="grid-cluster alt-align">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <button type="button" onclick="tx(IN1);">1</button>
         <div></div>
         <div></div>
         <div></div>
         <button type="button" onclick="tx(IN2);">2</button>
       </div>
-      <div class="grid-cluster alt-align">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <div></div>
         <div></div>
         <button type="button" onclick="tx(IN3);">3</button>
         <div></div>
         <div></div>
       </div>
-      <div class="grid-cluster alt-align">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <button type="button" onclick="tx(IN4);">4</button>
         <div></div>
         <div></div>
         <div></div>
         <button type="button" onclick="tx(IN5);">5</button>
       </div>
-      <div class="grid-cluster alt-align">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <button type="button" onclick="tx(PREV);">◀︎</button>
         <div></div>
         <div></div>

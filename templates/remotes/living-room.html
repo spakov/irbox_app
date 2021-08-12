@@ -1,26 +1,26 @@
 {% extends 'remote-base.html' %}
 {% block remote_content %}
-    <div id="remote" class="alt-align" style="--legend-font-size: 12pt; --legend-fg: #999; --remote-bg: #333; --remote-fg: white; --button-bg: #333; --button-fg: white; --button-width: 4rem; --button-height: 2rem; --button-gap: 0.5rem; --button-radius: 0.5ex; --button-font-size: 11pt; max-width: calc(var(--button-width) * 3 + var(--button-gap) * 4);">
-      <div id="status" class="alt-align" onclick="toggleResponse();"></div>
-      <legend class="alt-align">Projector</legend>
-      <div class="grid-cluster alt-align">
+    <div id="remote"{% if alt_align %} class="alt-align"{% endif %} style="--legend-font-size: 12pt; --legend-fg: #999; --remote-bg: #333; --remote-fg: white; --button-bg: #333; --button-fg: white; --button-width: 4rem; --button-height: 2rem; --button-gap: 0.5rem; --button-radius: 0.5ex; --button-font-size: 11pt; max-width: calc(var(--button-width) * 3 + var(--button-gap) * 4);">
+      <div id="status"{% if alt_align %} class="alt-align"{% endif %} onclick="toggleResponse();"></div>
+      <legend{% if alt_align %} class="alt-align"{% endif %}>Projector</legend>
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <button type="button" onclick="tx(OFF);">Off</button>
         <div></div>
         <button type="button" style="--button-bg: #090;" onclick="tx(ON);">On</button>
       </div>
-      <legend class="alt-align">Volume</legend>
-      <div class="grid-cluster alt-align">
+      <legend{% if alt_align %} class="alt-align"{% endif %}>Volume</legend>
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <button type="button" onclick="tx(MUTE);">Mute</button>
         <button type="button" onclick="tx(VDOWN);">−</button>
         <button type="button" onclick="tx(VUP);">+</button>
       </div>
-      <legend class="alt-align">Apple TV</legend>
-      <div class="grid-cluster alt-align">
+      <legend{% if alt_align %} class="alt-align"{% endif %}>Apple TV</legend>
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <button type="button" onclick="tx(HOME);">Home</button>
         <div></div>
         <button type="button" onclick="tx(MENU);">Menu</button>
       </div>
-      <div class="directional-cluster alt-align" style="--button-width: 3rem; --button-height: 3rem; --button-bg: #609; margin: var(--button-gap) calc(var(--button-gap) * 5);">
+      <div class="directional-cluster{% if alt_align %} alt-align{% endif %}" style="--button-width: 3rem; --button-height: 3rem; --button-bg: #609; margin: var(--button-gap) calc(var(--button-gap) * 5);">
         <div class="directional-up">
           <button type="button" onclick="tx(UP);"></button>
         </div>
@@ -37,18 +37,18 @@
           <button type="button" onclick="tx(DOWN);"></button>
         </div>
       </div>
-      <div class="grid-cluster alt-align">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <button type="button" style="--button-font-size: 10pt;" onclick="tx(REW);">Rewind</button>
         <button type="button" onclick="tx(PLAY);">Play</button>
         <button type="button" style="--button-font-size: 8pt;" onclick="tx(FFW);">Fast Forward</button>
       </div>
-      <div class="grid-cluster alt-align">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <button type="button" style="--button-font-size: 8pt;" onclick="tx(BACK);">Skip Back</button>
         <div></div>
         <button type="button" style="--button-font-size: 8pt;" onclick="tx(FWD);">Skip Forward</button>
       </div>
-      <legend class="alt-align">Input</legend>
-      <div class="grid-cluster alt-align">
+      <legend{% if alt_align %} class="alt-align"{% endif %}>Input</legend>
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <button type="button" onclick="tx(NEXT);">Next</button>
         <button type="button" style="--button-font-size: 8pt;" onclick="tx(WIN);">Computer</button>
         <button type="button" style="--button-font-size: 8pt;" onclick="tx(APPLE);">Apple TV</button>

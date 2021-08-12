@@ -32,6 +32,7 @@ Flask app.
 &#34;&#34;&#34;
 
 import logging
+import os
 
 from flask import Flask
 
@@ -48,6 +49,11 @@ from app.rx import rx_blueprint
 from app.status import status_blueprint
 from app.tx import tx_blueprint
 
+_ENV = &#39;IRBOX_CONFIG&#39;
+&#34;&#34;&#34;
+Name of config file environment variable.
+&#34;&#34;&#34;
+
 logger = logging.getLogger(__name__)
 
 # Initialize application
@@ -58,7 +64,7 @@ app.config.from_object(&#39;app.config.DefaultConfig&#39;)
 
 # Load runtime configuration
 try:
-    app.config.from_envvar(&#39;IRBOX_CONFIG&#39;)
+    app.config.from_envvar(_ENV)
 except RuntimeError:
     logger.warning(
             &#39;[1;31mWARNING[0m: The IRBOX_CONFIG environment variable is &#39;
@@ -84,7 +90,8 @@ app.register_blueprint(tx_blueprint)
 @app.before_first_request
 def init():
     &#34;&#34;&#34;
-    Start connection to the IR box immediately before the first request.
+    Establish soft connection to the IR box immediately before the first
+    request.
     &#34;&#34;&#34;
 
     # We don&#39;t care about errors right now since we&#39;re only doing a soft
@@ -95,10 +102,30 @@ def init():
     except IrboxError:
         pass
 
+    # If we should use retry, configure that
+    if app.config[&#39;RETRY&#39;]:
+        irbox.retry = True
+
 # Kick off Flask in debug mode
 if __name__ == &#39;__main__&#39;:
+    # By default, no extra files
+    extra_files = []
+
+    # Set up debug logging
     logging.basicConfig(level=logging.DEBUG)
-    app.run(host=&#39;0.0.0.0&#39;, port=&#39;5000&#39;, extra_files=[&#39;irbox.cfg&#39;], debug=True)</code></pre>
+
+    # If config file exists, have Werkzeug monitor for changes
+    if _ENV in os.environ:
+        if os.path.isfile(os.environ[_ENV]):
+            extra_files.append(os.environ[_ENV])
+
+    # Start the app
+    app.run(
+            host=&#39;0.0.0.0&#39;,
+            port=&#39;5000&#39;,
+            extra_files=extra_files,
+            debug=True
+    )</code></pre>
 </details>
 </section>
 <section>
@@ -112,7 +139,8 @@ if __name__ == &#39;__main__&#39;:
 <span>def <span class="ident">init</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Start connection to the IR box immediately before the first request.</p></div>
+<div class="desc"><p>Establish soft connection to the IR box immediately before the first
+request.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -120,7 +148,8 @@ if __name__ == &#39;__main__&#39;:
 <pre><code class="python">@app.before_first_request
 def init():
     &#34;&#34;&#34;
-    Start connection to the IR box immediately before the first request.
+    Establish soft connection to the IR box immediately before the first
+    request.
     &#34;&#34;&#34;
 
     # We don&#39;t care about errors right now since we&#39;re only doing a soft
@@ -129,7 +158,11 @@ def init():
     try:
         irbox.connect(app.config[&#39;HOST_ADDRESS&#39;], app.config[&#39;HOST_PORT&#39;], True)
     except IrboxError:
-        pass</code></pre>
+        pass
+
+    # If we should use retry, configure that
+    if app.config[&#39;RETRY&#39;]:
+        irbox.retry = True</code></pre>
 </details>
 </dd>
 </dl>

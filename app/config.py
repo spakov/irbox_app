@@ -1,5 +1,5 @@
 """
-Default IR box configuration. Override this with a `.cfg` file and the
+Default IR box configuration. Override this with a `.cfg` file named in the
 `IRBOX_CONFIG` environment variable!
 """
 
@@ -10,23 +10,23 @@ class DefaultConfig():
     Encapsulates default configuration.
     """
 
-    SECRET_KEY = 'changeme'
-    """
-    Flask session secret key. Generate these using the guidance outlined at
-    https://flask.palletsprojects.com/en/2.0.x/quickstart/#sessions.
-    """
-
-    HOST_ADDRESS = '0.0.0.0'
+    HOST_ADDRESS: str = '0.0.0.0'
     """
     IP address or hostname of the IR box device.
     """
 
-    HOST_PORT = 333
+    HOST_PORT: int = 333
     """
     TCP port number to connect to the IR box device.
     """
 
-    REMOTES = { 'demo': 'Demo Remote' }
+    RETRY: bool = False
+    """
+    Whether or not to attempt reconnection after a response timeout. Can be
+    useful for flaky connections.
+    """
+
+    REMOTES: dict = { 'demo': 'Demo Remote' }
     """
     Dictionary of remotes. Keys are the remote ID and values are the name of
     the remote.

@@ -6,6 +6,7 @@ from flask import Blueprint
 from flask import make_response
 from flask import redirect
 from flask import render_template
+from flask import request
 from flask import url_for
 
 from app import irbox
@@ -68,7 +69,10 @@ def rx_viewer():
     Outer page endpoint.
     """
 
-    return render_template("rx.html")
+    return render_template(
+            "rx.html",
+            alt_align=(request.cookies.get('alt-align') == 'true')
+    )
 
 @rx_blueprint.route('/rx/messages')
 def rx_messages():

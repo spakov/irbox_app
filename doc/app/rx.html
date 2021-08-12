@@ -35,6 +35,7 @@ from flask import Blueprint
 from flask import make_response
 from flask import redirect
 from flask import render_template
+from flask import request
 from flask import url_for
 
 from app import irbox
@@ -97,7 +98,10 @@ def rx_viewer():
     Outer page endpoint.
     &#34;&#34;&#34;
 
-    return render_template(&#34;rx.html&#34;)
+    return render_template(
+            &#34;rx.html&#34;,
+            alt_align=(request.cookies.get(&#39;alt-align&#39;) == &#39;true&#39;)
+    )
 
 @rx_blueprint.route(&#39;/rx/messages&#39;)
 def rx_messages():
@@ -298,7 +302,10 @@ def rx_viewer():
     Outer page endpoint.
     &#34;&#34;&#34;
 
-    return render_template(&#34;rx.html&#34;)</code></pre>
+    return render_template(
+            &#34;rx.html&#34;,
+            alt_align=(request.cookies.get(&#39;alt-align&#39;) == &#39;true&#39;)
+    )</code></pre>
 </details>
 </dd>
 </dl>

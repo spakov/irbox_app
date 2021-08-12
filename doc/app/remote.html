@@ -37,6 +37,7 @@ import urllib.parse
 from flask import Blueprint
 from flask import current_app
 from flask import render_template
+from flask import request
 from flask import url_for
 
 remote_blueprint = Blueprint(&#39;remote_blueprint&#39;, __name__)
@@ -69,9 +70,9 @@ def remote(remote_id):
         )
     else:
         remote_css = None
-
     return render_template(
             f&#39;remotes/{safe_remote_id}.html&#39;,
+            alt_align=(request.cookies.get(&#39;alt-align&#39;) == &#39;true&#39;),
             remote_name=current_app.config[&#39;REMOTES&#39;][remote_id],
             remote_script=remote_script,
             remote_css=remote_css
@@ -122,9 +123,9 @@ def remote(remote_id):
         )
     else:
         remote_css = None
-
     return render_template(
             f&#39;remotes/{safe_remote_id}.html&#39;,
+            alt_align=(request.cookies.get(&#39;alt-align&#39;) == &#39;true&#39;),
             remote_name=current_app.config[&#39;REMOTES&#39;][remote_id],
             remote_script=remote_script,
             remote_css=remote_css
