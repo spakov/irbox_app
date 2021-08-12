@@ -142,6 +142,17 @@ function toggleAlt() {
   _toggleAltElement(document.getElementById('response'));
   _toggleAltElement(document.getElementById('response-close'));
   _toggleAltElement(document.getElementById('remote'), true);
+
+  /* Save preference as cookie */
+  const expires = new Date();
+  expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000);
+  document.cookie = (
+    'alt-align='
+    + _getAltState()
+    + '; SameSite=Strict; expires='
+    + expires.toUTCString()
+    + '; path=/'
+  );
 }
 
 /*
@@ -178,6 +189,20 @@ function _toggleAltElement(element, recurse = false) {
       _toggleAltElement(element.children[i], true);
     }
   }
+}
+
+/*
+ * Gets the alternate alignment state. Returns true if the alt-align class
+ * exists in the alt-toggle container or false otherwise.
+ */
+function _getAltState() {
+  if (!document.getElementById('alt-toggle')) return;
+
+  if (document.getElementById('alt-toggle').className.search(/alt-align/) != -1) {
+    return true;
+  }
+
+  return false;
 }
 
 /*
@@ -240,7 +265,11 @@ function _request(uri, receiveMode = 0) {
             /* Ignore empty messages */
             if (request.responseText !== '') {
               /* Log message */
-              messages.innerHTML += '<li><span class="message">' + request.responseText + '</span></li>';
+              messages.innerHTML += (
+                '<li><span class="message">'
+                + _formatMessage(request.responseText)
+                + '</span></li>'
+              );
             }
           }
         }
@@ -288,6 +317,139 @@ function _request(uri, receiveMode = 0) {
 
   /* No receive mode, or all receive modes except inner page: busy status */
   if (receiveMode < 3) _statusColor(_statusBusyColor);
+}
+
+/*
+ * Formats a message for display. Handles oddly formatted commands, even beyond
+ * what the IR box returns.
+ */
+function _formatMessage(message) {
+  /* Start with just the message */
+  var startTags = '';
+  var formattedMessage = message;
+  var endTags = '';
+
+  /* Assume valid command */
+  var valid = true;
+
+  /* Check for tx command */
+  if (message.startsWith('+tx')) {
+    /* Put raw command in title attribute */
+    startTags = '<span title="' + message + '">'
+    endTags = '</span>'
+
+    /* Remove parentheses */
+    message = message.replace(/\+tx *\(/, '');
+    message = message.replace(/\)/, '');
+
+    /* Get arguments */
+    args = message.split(',');
+
+    /* Check for valid number of arguments */
+    if (args.length < 3 || args.length > 5) valid = false;
+
+    /* Loop through all arguments */
+    if (valid) for (var i = 0; i < args.length; i++) {
+      /* Trim */
+      args[i] = args[i].trim();
+
+      /* Check for decimal value */
+      if (Number.isInteger(args[i])) {
+        /* Assume decimal, so convert to hex */
+        args[i] = args[i].toString(16);
+      }
+    }
+
+    /* The first three arguments are protocol, address, and command, which all
+     * protocols use */
+    if (valid) {
+      var protocol = args[0];
+      var address = args[1];
+      var command = args[2];
+    }
+
+    /* Set index to point to next argument */
+    index = 3;
+
+    /* By default, no bits or repeats */
+    var bits = false;
+    var repeats = false;
+
+    /* Check for Sony protocol */
+    if (valid && protocol == '0x13') {
+      /* We need at least one more argument */
+      if (args.length < 4) valid = false;
+
+      /* Next argument is bits */
+      if (valid) bits = args[3];
+
+      /* Start at next argument */
+      index++;
+    }
+
+    /* Process repeats */
+    if (valid && index < args.length) repeats = args[index];
+
+    /* Add commas as needed */
+    if (valid) {
+      protocol += ',';
+      command += ',';
+      if (args.length > 3) address += ',';
+      if (args.length > 4 && bits) bits += ',';
+    }
+
+    /* Build command */
+    if (valid) formattedMessage = (
+      '<span class="brace">{</span> '
+      + '<span class="string">\'p\'</span>: '
+      + protocol.padEnd(6, ' ')
+      + '<wbr>'
+      + '<span class="string">\'a\'</span>: '
+      + address.padEnd(8, ' ')
+      + '<wbr>'
+      + '<span class="string">\'c\'</span>: '
+      + command.padEnd(8, ' ')
+      + '<wbr>'
+    );
+
+    /* If bits, add those */
+    if (valid && bits) formattedMessage += (
+      '<span class="string">\'b\'</span>: '
+      + bits.padEnd(6, ' ')
+      + '<wbr>'
+    );
+
+    /* If repeats, add those */
+    if (valid && repeats) formattedMessage += (
+      '<span class="string">\'r\'</span>: '
+      + repeats.padEnd(6, ' ')
+      + '<wbr>'
+    );
+
+    /* Finish the command */
+    if (valid) formattedMessage += '<span class="brace">}</span>';
+  }
+
+  /* Check for invalid command */
+  if (!valid) {
+    startTags = '<span class="negative">';
+    formattedMessage = 'Malformed arguments';
+    endTags = '</span>';
+  }
+
+  /* Check for positive status */
+  if (message.startsWith('+')) {
+    startTags = '<span class="positive">';
+    endTags = '</span>';
+  }
+
+  /* Check for negative status */
+  if (message.startsWith('-')) {
+    startTags = '<span class="negative">';
+    endTags = '</span>';
+  }
+
+  return startTags + formattedMessage + endTags;
 }
 
 /*

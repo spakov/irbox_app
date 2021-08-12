@@ -1,5 +1,5 @@
 body {
-  background-color: white;
+  background-color: #ccc;
   color: black;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
@@ -13,6 +13,22 @@ body {
   border: 1px #eee dashed;
   background-color: #ddd;
   padding: 0 0.5ex;
+}
+
+.message .positive {
+  color: #090;
+}
+
+.message .negative {
+  color: #900;
+}
+
+.message .brace {
+  color: #099;
+}
+
+.message .string {
+  color: #909;
 }
 
 h1 {
@@ -365,8 +381,24 @@ button#response-close.alt-align {
     color: white;
   }
 
+  .message .positive {
+    color: #090;
+  }
+
+  .message .negative {
+    color: #900;
+  }
+
+  .message .brace {
+    color: #0cc;
+  }
+
+  .message .string {
+    color: #c0c;
+  }
+
   h1 {
-    border-bottom: 1px #333 dotted;
+    border-bottom: 1px #666 dotted;
   }
 
   .message {
