@@ -69,7 +69,7 @@ function tx(args) {
 /*
  * Sends an rx command to the IR box.
  */
-function rx(args) {
+function rx() {
   _responseContainer.contentWindow.rxMessages();
   _request('/rx', 1);
 }
@@ -77,7 +77,7 @@ function rx(args) {
 /*
  * Sends a norx command to the IR box.
  */
-function norx(args) {
+function norx() {
   _request('/norx', 2);
   _responseContainer.contentWindow.rxMessages(false);
 }

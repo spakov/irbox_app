@@ -31,12 +31,12 @@
 Index endpoint.
 &#34;&#34;&#34;
 
-import os
-
 from flask import current_app
 from flask import Blueprint
 from flask import render_template
-from flask import url_for
+
+from app.include import IncludeType
+from app.include import remote_include
 
 index_blueprint = Blueprint(&#39;index_blueprint&#39;, __name__)
 
@@ -51,19 +51,13 @@ def index():
 
     # Loop through each remote
     for remote_id, remote_name in current_app.config[&#39;REMOTES&#39;].items():
-        # Get remote image
-        remote_image = f&#39;remotes/images/{remote_id}.png&#39;
-        if os.path.isfile(f&#39;static/{remote_image}&#39;):
-            remote_image = url_for(
-                    &#39;static&#39;,
-                    filename=remote_image
-            )
-        else:
-            remote_image = None
+        # Get remote URL and image
+        remote_url = remote_include(remote_id, IncludeType.URL)
+        remote_image = remote_include(remote_id, IncludeType.IMAGE)
 
         # Build a dictionary of remotes with keys of remote ID and values of a
-        # tuple of remote name and remote image
-        remotes[remote_id] = (remote_name, remote_image)
+        # tuple of remote name, remote_url, and remote image
+        remotes[remote_id] = (remote_name, remote_url, remote_image)
 
     return render_template(
             &#39;index.html&#39;,
@@ -98,19 +92,13 @@ def index():
 
     # Loop through each remote
     for remote_id, remote_name in current_app.config[&#39;REMOTES&#39;].items():
-        # Get remote image
-        remote_image = f&#39;remotes/images/{remote_id}.png&#39;
-        if os.path.isfile(f&#39;static/{remote_image}&#39;):
-            remote_image = url_for(
-                    &#39;static&#39;,
-                    filename=remote_image
-            )
-        else:
-            remote_image = None
+        # Get remote URL and image
+        remote_url = remote_include(remote_id, IncludeType.URL)
+        remote_image = remote_include(remote_id, IncludeType.IMAGE)
 
         # Build a dictionary of remotes with keys of remote ID and values of a
-        # tuple of remote name and remote image
-        remotes[remote_id] = (remote_name, remote_image)
+        # tuple of remote name, remote_url, and remote image
+        remotes[remote_id] = (remote_name, remote_url, remote_image)
 
     return render_template(
             &#39;index.html&#39;,

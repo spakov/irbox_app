@@ -20,7 +20,7 @@ all: lint doc
 .PHONY: lint
 lint:
 	@# Find all .py files not in IGNORE_DIRS
-	$(PYLINT) -j3 $$(find . \( $(shell for i in $(IGNORE_DIRS); do echo "-path ./$$i -o "; done) -false \) -prune -o \( -name '*.py' -print \))
+	$(PYLINT) -j 0 $$(find . \( $(shell for i in $(IGNORE_DIRS); do echo "-path ./$$i -o "; done) -false \) -prune -o \( -name '*.py' -print \))
 
 .PHONY: doc
 doc:

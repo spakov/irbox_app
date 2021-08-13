@@ -11,6 +11,7 @@ from irbox.errors import IrboxError
 
 from app import irbox
 from app.error import error_blueprint
+from app.include import check_safety
 from app.index import index_blueprint
 from app.invalid import invalid_blueprint
 from app.nop import nop_blueprint
@@ -27,6 +28,13 @@ Name of config file environment variable.
 
 logger = logging.getLogger(__name__)
 
+# Set up logging depending on whether or not we're using the built-in Flask
+# server
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.WARNING)
+
 # Initialize application
 app = Flask(__name__)
 
@@ -38,10 +46,14 @@ try:
     app.config.from_envvar(_ENV)
 except RuntimeError:
     logger.warning(
-            '[1;31mWARNING[0m: The IRBOX_CONFIG environment variable is '
-            'not set. Proceeding with default configuration. Do not expect '
-            'this to work well!'
+            '[31mThe IRBOX_CONFIG environment variable is not set. '
+            'Proceeding with default configuration. Do not expect this to '
+            'work well![0m'
     )
+
+# Check remote IDs for safety
+for remote_id in app.config['REMOTES']:
+    check_safety(remote_id)
 
 # Enable block trimming to produce nicer HTML
 app.jinja_env.trim_blocks = True
@@ -81,9 +93,6 @@ def init():
 if __name__ == '__main__':
     # By default, no extra files
     extra_files = []
-
-    # Set up debug logging
-    logging.basicConfig(level=logging.DEBUG)
 
     # If config file exists, have Werkzeug monitor for changes
     if _ENV in os.environ:

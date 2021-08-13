@@ -1,5 +1,5 @@
 body {
-  background-color: #ccc;
+  background-color: #eee;
   color: black;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
@@ -128,7 +128,12 @@ ul#remotes figure img {
   position: absolute;
   bottom: 0;
   width: calc(100% - 1rem);
-  margin-bottom: 1.5em;
+}
+
+@media only screen and (max-device-width: 480px) {
+  #tools {
+    margin-bottom: 1.5em;
+  }
 }
 
 #tools ul, #tools li {

@@ -4,7 +4,7 @@ Default IR box configuration. Override this with a `.cfg` file named in the
 """
 
 class DefaultConfig():
-    #pylint: disable=too-few-public-methods
+    # pylint: disable=too-few-public-methods
 
     """
     Encapsulates default configuration.

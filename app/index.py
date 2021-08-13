@@ -2,12 +2,12 @@
 Index endpoint.
 """
 
-import os
-
 from flask import current_app
 from flask import Blueprint
 from flask import render_template
-from flask import url_for
+
+from app.include import IncludeType
+from app.include import remote_include
 
 index_blueprint = Blueprint('index_blueprint', __name__)
 
@@ -22,19 +22,13 @@ def index():
 
     # Loop through each remote
     for remote_id, remote_name in current_app.config['REMOTES'].items():
-        # Get remote image
-        remote_image = f'remotes/images/{remote_id}.png'
-        if os.path.isfile(f'static/{remote_image}'):
-            remote_image = url_for(
-                    'static',
-                    filename=remote_image
-            )
-        else:
-            remote_image = None
+        # Get remote URL and image
+        remote_url = remote_include(remote_id, IncludeType.URL)
+        remote_image = remote_include(remote_id, IncludeType.IMAGE)
 
         # Build a dictionary of remotes with keys of remote ID and values of a
-        # tuple of remote name and remote image
-        remotes[remote_id] = (remote_name, remote_image)
+        # tuple of remote name, remote_url, and remote image
+        remotes[remote_id] = (remote_name, remote_url, remote_image)
 
     return render_template(
             'index.html',

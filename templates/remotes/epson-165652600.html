@@ -1,6 +1,6 @@
 {% extends 'remote-base.html' %}
 {% block remote_content %}
-    <div id="remote"{% if alt_align %} class="alt-align"{% endif %} style="--legend-font-size: 11pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-bg: #ccc; --button-fg: black; --button-width: 4rem; --button-height: 1.5rem; --button-gap: 0.5rem; --button-radius: 0.5ex; --button-font-size: 9pt; max-width: calc(var(--button-width) * 3 + var(--button-gap) * 4); border-radius: 1.5em;">
+    <div id="remote"{% if alt_align %} class="alt-align"{% endif %} style="--legend-font-size: 11pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-bg: #ccc; --button-fg: black; --button-width: 4rem; --button-height: 1.5rem; --button-gap: 0.5rem; --button-radius: 0.5ex; --button-font-size: 9pt; max-width: calc(var(--button-width) * 3 + var(--button-gap) * 4); border-radius: 1.5rem;">
       <div id="status" class="no-alt" style="margin-right: calc(var(--button-gap) * 2);" onclick="toggleResponse();"></div>
       <div class="grid-cluster no-alt" style="--button-width: 2.5rem; --button-height: 1.25rem; text-align: center; font-size: 10pt;">
         <p>On</p>
@@ -15,7 +15,7 @@
         <div></div>
         <button type="button" style="--button-bg: black; --button-fg: #ccc;" onclick="tx(BLANK);">Blank</button>
       </div>
-      <div style="text-align: center; margin: 0 var(--button-gap); border-bottom: 1px white solid; line-height: 0.1em; font-size: 10pt;">
+      <div style="text-align: center; margin: 0 var(--button-gap); border-bottom: 1px white solid; line-height: 0.1rem; font-size: 10pt;">
         <span style="background-color: #333; padding: 0 var(--button-gap);">Source</span>
       </div>
       <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
@@ -26,7 +26,7 @@
         <button type="button" onclick="tx(LAN);">LAN</button>
         <button type="button" onclick="tx(SWAP);">SWAP</button>
       </div>
-      <div style="text-align: center; margin: 0; border-bottom: 1px #222 solid; line-height: 0.1em;"></div>
+      <div style="text-align: center; margin: 0; border-bottom: 1px #222 solid; line-height: 0.1rem;"></div>
       <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="--button-bg: black; --button-fg: #ccc;">
         <button type="button" onclick="tx(REW);">◀︎◀︎</button>
         <button type="button" onclick="tx(PLAY);">▶︎</button>
@@ -38,13 +38,13 @@
         <button type="button" onclick="tx(STOP);">◼︎</button>
         <button type="button" onclick="tx(MUTE);">⊝Mute</button>
       </div>
-      <div style="height: 0.1em;"></div>
+      <div style="height: 0.1rem;"></div>
       <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="--button-height: 2.5rem; --button-bg: black; --button-fg: #ccc;">
         <button type="button" onclick="tx(HDMIL);">HDMI Link</button>
-        <button type="button" onclick="tx(VOLDN);"><span style="display: block; margin-left: calc(-1 * var(--button-gap)); margin-top: 0.25em; height: 1.5em;">Volume</span><span style="display: block; margin-left: calc(-1 * var(--button-gap)); margin-top: -0.5em; height: 1.5em; font-size: 16pt;">−</span></button>
-        <button type="button" onclick="tx(VOLUP);"><span style="display: block; margin-left: calc(-1 * var(--button-gap)); margin-top: 0.25em; height: 1.5em;">Volume</span><span style="display: block; margin-left: calc(-1 * var(--button-gap)); margin-top: -0.5em; height: 1.5em; font-size: 16pt;">+</span></button>
+        <button type="button" onclick="tx(VOLDN);"><span style="display: block; margin-left: calc(-1 * var(--button-gap)); margin-top: 0.25rem; height: 1.5rem;">Volume</span><span style="display: block; margin-left: calc(-1 * var(--button-gap)); margin-top: -1rem; height: 1.5rem; font-size: 16pt;">−</span></button>
+        <button type="button" onclick="tx(VOLUP);"><span style="display: block; margin-left: calc(-1 * var(--button-gap)); margin-top: 0.25rem; height: 1.5rem;">Volume</span><span style="display: block; margin-left: calc(-1 * var(--button-gap)); margin-top: -1rem; height: 1.5rem; font-size: 16pt;">+</span></button>
       </div>
-      <div style="height: 0.5em;"></div>
+      <div style="height: 0.5rem;"></div>
       <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="--button-height: 2.5rem;">
         <button type="button" style="font-size: 12pt;" onclick="tx(HDMIL);">Lens</button>
         <button type="button" onclick="tx(VOLDN);">Color Mode</button>
@@ -72,7 +72,7 @@
         <button type="button" style="font-size: 12pt;" onclick="tx(MENU);">Menu</button>
         <button type="button" style="font-size: 12pt;" onclick="tx(ESC);">Esc</button>
       </div>
-      <div style="text-align: center; margin: 0; border-bottom: 1px #222 solid; line-height: 0.1em;"></div>
+      <div style="text-align: center; margin: 0; border-bottom: 1px #222 solid; line-height: 0.1rem;"></div>
       <div class="grid-cluster{% if alt_align %} alt-align{% endif %}">
         <button type="button" onclick="tx(MEMRY);">Memory</button>
         <button type="button" onclick="tx(LENS1);">Lens1</button>
@@ -84,14 +84,14 @@
         <button type="button" class="condensed" style="font-size: 8pt; font-stretch: condensed;" onclick="tx(TDFMT);">3D Format</button>
         <button type="button" onclick="tx(ASPCT);">Aspect</button>
       </div>
-      <div style="height: 3em;"></div>
+      <div style="height: 3rem;"></div>
       <div style="text-align: center;">
         <span style="font-size: 16pt; font-weight: 600;">EPSON</span>
-        <div style="height: 0.25em;"></div>
+        <div style="height: 0.25rem;"></div>
         <div>
-          <span style="background-color: #ccc; color: #333; border-radius: 0.6ex; padding: 0 2em;">Projector</span>
+          <span style="background-color: #ccc; color: #333; border-radius: 0.6ex; padding: 0 2rem;">Projector</span>
         </div>
       </div>
-      <div style="height: 1em;"></div>
+      <div style="height: 1rem;"></div>
     </div>
 {% endblock %}

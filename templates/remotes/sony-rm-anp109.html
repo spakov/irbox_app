@@ -1,7 +1,7 @@
 {% extends 'remote-base.html' %}
 {% block remote_content %}
     <div id="remote"{% if alt_align %} class="alt-align"{% endif %} style="--legend-font-size: 9pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-width: 3.5rem; --button-height: 1.5rem; --button-gap: 1rem; --button-radius: 0.5ex; --button-font-size: 9pt; max-width: calc(var(--button-width) * 3 + var(--button-gap) * 4);">
-      <div style="height: 2em;">
+      <div style="height: 2rem;">
         <div id="status"{% if alt_align %} class="alt-align"{% endif %} style="margin-bottom: 0;" onclick="toggleResponse();"></div>
       </div>
       <div class="grid-cluster" style="margin-top: 0; --button-width: calc(3.5rem * 3/4); --button-height: 1rem; --button-gap: 0.75rem; color: #ff9; font-size: 8pt; text-align: center;">
@@ -19,7 +19,7 @@
         <button type="button" onclick="tx(TVCHU);">+</button>
         <button type="button" style="--button-fg: white;" onclick="tx(INPTN);">+</button>
       </div>
-      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="margin-top: 0; margin-bottom: 0.5ex; --button-height: 1em; color: #ff9; font-size: 8pt; text-align: center;">
+      <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="margin-top: 0; margin-bottom: -0.3ex; --button-height: 1rem; color: #ff9; font-size: 8pt; text-align: center;">
         <span>TV VOL</span>
         <span>TV CH</span>
         <span style="color: white;">INPUT</span>
@@ -38,7 +38,7 @@
           <button type="button" class="condensed" style="font-stretch: condensed;" onclick="tx(PAUDO);">P.AUDIO</button>
           <button type="button" class="condensed" style="font-stretch: condensed;" onclick="tx(STREO);">STEREO</button>
         </div>
-        <span style="display: block; position: relative; top: calc(-1 * 2 * (var(--button-height) + var(--button-gap) - 1em - 1ex)); font-size: 8pt; text-align: center;">SOUND FIELD</span>
+        <span style="display: block; position: relative; top: calc(-1 * 2 * (var(--button-height) + var(--button-gap) - 0.75rem - 0.8ex)); font-size: 8pt; text-align: center;">SOUND FIELD</span>
       </div>
       <div class="grid-cluster" style="margin-top: -2rem; margin-bottom: 0; --button-width: calc(3.5rem * 1/2); --button-height: calc(3.5rem * 1/2); --button-gap: 1.5rem; --button-radius: 1rem; font-size: 8pt; text-align: center;">
         <span style="margin-top: auto; margin-bottom: calc(-1 * var(--button-gap) + 0.5ex);"><br>NIGHT</span>
@@ -85,7 +85,7 @@
         <span style="margin-top: calc(-1 * var(--button-gap) + 0.5ex); margin-bottom: auto; white-space: nowrap; direction: rtl;">AMP MENU</span>
       </div>
       <div style="height: var(--button-gap);"></div>
-      <div style="text-align: center; margin: 0 var(--button-gap); border-bottom: 1px white solid; line-height: 0.1em; font-size: 10pt;">
+      <div style="text-align: center; margin: 0 var(--button-gap); border-bottom: 1px white solid; line-height: 0.1rem; font-size: 10pt;">
         <span style="background-color: #333; padding: 0 1ex;">BLUETOOTH</span>
       </div>
       <div class="grid-cluster{% if alt_align %} alt-align{% endif %}" style="margin-top: calc(var(--button-gap) / 2); margin-bottom: 0;">
@@ -108,9 +108,9 @@
       </div>
       <div style="text-align: center;">
         <span style="font-size: 16pt; font-weight: 600;">SONY</span>
-        <div style="height: 0.25em;"></div>
+        <div style="height: 0.25rem;"></div>
         <div>
-          <span style="background-color: #ccc; color: #333; border-radius: 0.6ex; padding: 0 2em;">AV SYSTEM</span>
+          <span style="background-color: #ccc; color: #333; border-radius: 0.6ex; padding: 0 2rem;">AV SYSTEM</span>
         </div>
         <span style="font-size: 8pt;">RM-ANP109</span>
       </div>

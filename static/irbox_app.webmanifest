@@ -3,7 +3,7 @@
   "short_name": "IR Box",
   "display": "fullscreen",
   "theme_color": "#333",
-  "background_color": "#fff",
+  "background_color": "#000",
   "icons": [{
     "src": "/android-chrome-192x192.png",
     "sizes": "192x192",

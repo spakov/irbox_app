@@ -12,7 +12,7 @@ from irbox.errors import MalformedArgumentsError
 from irbox.message import Message
 from irbox.count_generator import count_generator
 
-logger = logging.getLogger('irbox')
+logger = logging.getLogger(__name__)
 
 class IrBox:
     # pylint: disable=too-many-instance-attributes

@@ -1,8 +1,8 @@
 {% extends 'remote-base.html' %}
 {% block remote_content %}
-    <div id="remote"{% if alt_align %} class="alt-align"{% endif %} style="--legend-font-size: 9pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-bg: #666; --button-fg: white; --button-width: 2em; --button-height: 2em; --button-gap: 0.4em; --button-radius: 0.5ex; --button-font-size: 11pt; max-width: calc(var(--button-width) * 5 + var(--button-gap) * 6); border-radius: 0.5em 0.5em 1em 1em;">
+    <div id="remote"{% if alt_align %} class="alt-align"{% endif %} style="--legend-font-size: 9pt; --legend-fg: white; --remote-bg: #333; --remote-fg: white; --button-bg: #666; --button-fg: white; --button-width: 2rem; --button-height: 2rem; --button-gap: 0.4rem; --button-radius: 0.5ex; --button-font-size: 11pt; max-width: calc(var(--button-width) * 5 + var(--button-gap) * 6); border-radius: 0.5rem 0.5rem 1rem 1rem;">
       <div id="status" onclick="toggleResponse();"></div>
-      <div style="height: 1em;"></div>
+      <div style="height: 1rem;"></div>
       <legend class="no-alt">Power</legend>
       <div class="grid-cluster">
         <button type="button" style="--button-radius: 1rem; --button-bg: #c00; --button-font-size: 10pt;" onclick="tx(PWR);">⌽</button>
@@ -39,12 +39,12 @@
         <div></div>
         <button type="button" onclick="tx(NEXT);">▶︎</button>
       </div>
-      <div style="height: 3em;"></div>
+      <div style="height: 3rem;"></div>
       <div style="text-align: center; font-size: 9pt;">
         <p>5 Port Amplifier Selector</p>
         <p>Remote Control</p>
         <p style="font-size: 11pt;">OZQ3-3</p>
       </div>
-      <div style="height: 0.5em;"></div>
+      <div style="height: 0.5rem;"></div>
     </div>
 {% endblock %}

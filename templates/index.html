@@ -6,15 +6,18 @@
 {% for remote_id, remote_data in remotes.items() %}
 {# This is hackish, but works to unpck a tuple #}
 {% set remote_name = remote_data.0 %}
-{% set remote_image = remote_data.1 %}
+{% set remote_url = remote_data.1 %}
+{% set remote_image = remote_data.2 %}
+{% if remote_url %}
       <li>
         <figure>
-          <figcaption><a href="{{ url_for('remote_blueprint.remote', remote_id=remote_id) }}">{{ remote_name }}</a></figcaption>
+          <figcaption><a href="{{ remote_url }}">{{ remote_name }}</a></figcaption>
           {% if remote_image %}
-          <a href="{{ url_for('remote_blueprint.remote', remote_id=remote_id) }}"><img src="{{ remote_image }}"></a>
+          <a href="{{ remote_url }}"><img src="{{ remote_image }}"></a>
           {% endif %}
         </figure>
       </li>
+{% endif %}
 {% endfor %}
     </ul>
     <div id="tools">
